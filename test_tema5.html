@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Árboles (Partes I y II)</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#ffffff;--sf:#f7f7f7;--br:#e4e4e4;--tx:#111;--mx:#666;--ac:#111;--r:8px;--tr:180ms ease}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column}
+#pb{position:fixed;top:0;left:0;height:3px;background:var(--ac);transition:width 400ms ease;z-index:100}
+header{padding:2.5rem 2rem 1.5rem;border-bottom:1px solid var(--br);max-width:740px;margin:0 auto;width:100%}
+.sub{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mx);margin-bottom:.4rem}
+h1{font-size:1.55rem;font-weight:700;letter-spacing:-.02em}
+.bk{display:inline-block;margin-top:.6rem;font-size:.75rem;color:var(--mx);text-decoration:none;letter-spacing:.05em;text-transform:uppercase}
+.bk:hover{color:var(--tx)}
+main{max-width:740px;margin:0 auto;width:100%;padding:2rem;flex:1}
+.qc{font-size:.78rem;color:var(--mx);letter-spacing:.04em;margin-bottom:1.4rem}
+.card{display:none;animation:fi 220ms ease}
+.card.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.qt{font-size:1rem;line-height:1.7;font-weight:500;margin-bottom:1.4rem}
+.code{background:var(--sf);border:1px solid var(--br);border-radius:var(--r);padding:.9rem 1rem;font-family:'Fira Code',Consolas,monospace;font-size:.82rem;margin-bottom:1.1rem;line-height:1.55;overflow-x:auto;white-space:pre}
+.opts{display:flex;flex-direction:column;gap:.55rem}
+.opt{display:flex;align-items:flex-start;gap:.9rem;padding:.85rem 1rem;border:1px solid var(--br);border-radius:var(--r);cursor:pointer;transition:background var(--tr),border-color var(--tr)}
+.opt:hover:not(.done){background:var(--sf);border-color:#bbb}
+.ol{font-size:.72rem;font-weight:700;letter-spacing:.05em;min-width:16px;color:var(--mx);padding-top:2px}
+.ot{font-size:.92rem;line-height:1.5}
+.opt.ok{background:var(--ac);border-color:var(--ac);color:#fff}
+.opt.ok .ol{color:rgba(255,255,255,.65)}
+.opt.bad{background:#777;border-color:#777;color:#fff;opacity:.85}
+.opt.bad .ol{color:rgba(255,255,255,.65)}
+.opt.dim{opacity:.3;cursor:default}
+.opt.done{cursor:default}
+.fb{display:none;margin-top:.9rem;font-size:.83rem;color:var(--mx);line-height:1.55;padding:.75rem 1rem;border-left:3px solid var(--br)}
+.fb.on{display:block}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--br)}
+.pg{font-size:.78rem;color:var(--mx)}
+.btn{padding:.55rem 1.3rem;font-size:.85rem;font-weight:600;border:1px solid var(--ac);border-radius:var(--r);cursor:pointer;background:transparent;color:var(--tx);transition:background var(--tr),color var(--tr);letter-spacing:.02em}
+.btn:hover{background:var(--ac);color:#fff}
+.btn.pr{background:var(--ac);color:#fff}
+.btn.pr:hover{opacity:.8}
+.btn:disabled{opacity:.28;cursor:default}
+.btn:disabled:hover{background:transparent;color:var(--tx)}
+#res{display:none;text-align:center;padding:3rem 0;animation:fi 400ms ease}
+.ring{width:130px;height:130px;margin:0 auto 1.8rem}
+.ring svg{transform:rotate(-90deg)}
+.pct{font-size:2.4rem;font-weight:800;letter-spacing:-.04em;margin-bottom:.25rem}
+.desc{font-size:.88rem;color:var(--mx);margin-bottom:2.2rem}
+.stats{display:flex;justify-content:center;gap:2rem;margin-bottom:2.2rem;font-size:.83rem}
+.sv{font-size:1.35rem;font-weight:700;display:block}
+.sl{color:var(--mx)}
+</style>
+</head>
+<body>
+<div id="pb" style="width:0%"></div>
+<header>
+  <div class="sub">Estructuras de Datos — Tema 5</div>
+  <h1>Árboles (Partes I y II)</h1>
+  <a class="bk" href="index.html">← Índice</a>
+</header>
+<main>
+  <div id="quiz">
+    <div class="qc" id="qc">Pregunta 1 de N</div>
+  </div>
+  <div id="res">
+    <div class="ring">
+      <svg viewBox="0 0 120 120" width="130" height="130">
+        <circle cx="60" cy="60" r="52" fill="none" stroke="#e8e8e8" stroke-width="9"/>
+        <circle cx="60" cy="60" r="52" fill="none" stroke="#111" stroke-width="9"
+          stroke-dasharray="326.7" stroke-dashoffset="326.7"
+          id="sc" stroke-linecap="round" style="transition:stroke-dashoffset 1.1s ease"/>
+      </svg>
+    </div>
+    <div class="pct" id="pct">0%</div>
+    <div class="desc" id="rdesc">—</div>
+    <div class="stats">
+      <div><span class="sv" id="sok">0</span><span class="sl">Correctas</span></div>
+      <div><span class="sv" id="sng">0</span><span class="sl">Incorrectas</span></div>
+      <div><span class="sv" id="stot">0</span><span class="sl">Total</span></div>
+    </div>
+    <button class="btn pr" onclick="start()">Repetir test</button><br>
+    <a class="bk" href="index.html" style="margin-top:1rem">← Índice</a>
+  </div>
+</main>
+<script>
+const AC=window.AudioContext||window.webkitAudioContext;let ax=null;
+function ga(){if(!ax)ax=new AC();return ax;}
+function beep(f,d){try{const c=ga(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.18,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
+const ALL=[{"text": "¿Qué es un árbol como estructura de datos?", "options": [{"text": "Estructura no lineal basada en una relación binaria de orden no necesariamente total", "c": true}, {"text": "Estructura lineal donde cada elemento tiene exactamente un sucesor", "c": false}, {"text": "Grafo dirigido con ciclos que organiza datos jerárquicamente", "c": false}, {"text": "Array bidimensional con relaciones entre filas y columnas", "c": false}]}, {"text": "¿Cuáles son las 6 proposiciones equivalentes que caracterizan a un árbol (grafo no dirigido)?", "options": [{"text": "Es conexo, acíclico, |V|-1 aristas, cualquier par conectado por único camino, eliminar arista → no conexo, añadir arista → ciclo", "c": true}, {"text": "Es dirigido, acíclico, con raíz única y hojas en el mismo nivel", "c": false}, {"text": "Tiene exactamente un camino entre cada par de nodos y tiene ciclos", "c": false}, {"text": "Es conexo, tiene n nodos y n aristas, y es bipartito", "c": false}]}, {"text": "¿Qué es el nodo raíz en un árbol?", "options": [{"text": "El único nodo del árbol sin padre", "c": true}, {"text": "El nodo con el mayor número de hijos", "c": false}, {"text": "El nodo más profundo del árbol (hoja más alejada)", "c": false}, {"text": "El primer nodo insertado en el árbol", "c": false}]}, {"text": "¿Qué son los nodos hoja?", "options": [{"text": "Nodos sin descendientes (sin hijos)", "c": true}, {"text": "Nodos con exactamente un hijo", "c": false}, {"text": "El nodo raíz del árbol", "c": false}, {"text": "Nodos en el último nivel del árbol con padre común", "c": false}]}, {"text": "¿Qué es el grado de un nodo?", "options": [{"text": "El número máximo de hijos que tiene ese nodo", "c": true}, {"text": "La profundidad del nodo en el árbol", "c": false}, {"text": "El número de aristas que inciden en el nodo", "c": false}, {"text": "El nivel del nodo más un valor de offset", "c": false}]}, {"text": "¿Cómo se define la profundidad de un nodo?", "options": [{"text": "Longitud (número de aristas) desde la raíz hasta el nodo", "c": true}, {"text": "Número de hijos que tiene el nodo", "c": false}, {"text": "Número de nodos en el camino desde la raíz hasta el nodo", "c": false}, {"text": "Altura del subárbol que tiene ese nodo como raíz", "c": false}]}, {"text": "¿Cómo se define la altura de un árbol?", "options": [{"text": "La profundidad del nodo más profundo del árbol", "c": true}, {"text": "El número total de nodos del árbol", "c": false}, {"text": "El número de hojas del árbol", "c": false}, {"text": "La profundidad de la raíz más uno", "c": false}]}, {"text": "¿Cuál es el nivel del nodo raíz?", "options": [{"text": "1 (nivel = profundidad + 1, y la raíz tiene profundidad 0)", "c": true}, {"text": "0 (el nivel y la profundidad coinciden en la raíz)", "c": false}, {"text": "Depende del número de hijos que tenga", "c": false}, {"text": "2 (el nivel empieza en 2 para evitar confusión con la profundidad)", "c": false}]}, {"text": "¿Qué es un árbol Trie?", "options": [{"text": "Árbol de prefijos donde la raíz representa la cadena vacía y cada camino hasta una hoja $ representa una palabra", "c": true}, {"text": "Árbol binario de búsqueda donde cada nodo almacena un carácter del alfabeto", "c": false}, {"text": "Árbol donde cada hoja contiene una palabra completa sin prefijos compartidos", "c": false}, {"text": "Árbol equilibrado para búsqueda de cadenas en O(log n)", "c": false}]}, {"text": "¿Cuál es la principal aplicación de los árboles Trie?", "options": [{"text": "Representación eficiente de diccionarios o conjuntos grandes de palabras (ej: corrector ortográfico)", "c": true}, {"text": "Ordenación de arrays en tiempo O(n log n)", "c": false}, {"text": "Representación de grafos ponderados dirigidos", "c": false}, {"text": "Indexación de bases de datos relacionales", "c": false}]}, {"text": "¿Por qué un Trie es eficiente para diccionarios de palabras?", "options": [{"text": "Porque agrupa palabras con prefijos comunes, evitando almacenar los prefijos repetidos", "c": true}, {"text": "Porque usa menos memoria que cualquier otro árbol", "c": false}, {"text": "Porque permite búsqueda en O(1) sin importar el tamaño del diccionario", "c": false}, {"text": "Porque es un árbol perfectamente balanceado siempre", "c": false}]}, {"text": "En la representación 'hijo izquierdo - hermano derecho' de árboles genéricos, ¿qué almacena cada nodo?", "options": [{"text": "Un puntero al hijo más a la izquierda y un puntero al hermano inmediatamente a su derecha", "c": true}, {"text": "Un puntero al padre y un puntero al hijo más a la derecha", "c": false}, {"text": "Dos punteros a los hijos izquierdo y derecho (como árbol binario)", "c": false}, {"text": "Un puntero al primer hijo y un contador del número de hijos", "c": false}]}, {"text": "¿Qué es un árbol binario?", "options": [{"text": "Árbol donde cada nodo tiene como máximo dos hijos (subárbol izquierdo y derecho)", "c": true}, {"text": "Árbol donde cada nodo tiene exactamente dos hijos siempre", "c": false}, {"text": "Árbol donde la raíz tiene dos hijos y los demás tienen uno", "c": false}, {"text": "Árbol donde los elementos se almacenan en pares", "c": false}]}, {"text": "¿Qué es un árbol binario COMPLETO?", "options": [{"text": "Árbol binario donde cada nodo tiene exactamente 0 o 2 hijos", "c": true}, {"text": "Árbol binario donde todas las hojas están en el mismo nivel", "c": false}, {"text": "Árbol binario donde todos los niveles están completamente llenos", "c": false}, {"text": "Árbol binario con el mínimo número de nodos posible", "c": false}]}, {"text": "¿Qué es un árbol binario PERFECTO?", "options": [{"text": "Árbol binario completo donde todas las hojas tienen la misma profundidad", "c": true}, {"text": "Árbol binario donde cada nodo tiene 0 o 2 hijos", "c": false}, {"text": "Árbol binario donde todos los nodos internos tienen exactamente un hijo", "c": false}, {"text": "Árbol binario que es a la vez AVL y ABB", "c": false}]}, {"text": "¿En qué orden se visitan los nodos en un recorrido INORDEN?", "options": [{"text": "Subárbol izquierdo → Nodo actual → Subárbol derecho", "c": true}, {"text": "Nodo actual → Subárbol izquierdo → Subárbol derecho", "c": false}, {"text": "Subárbol izquierdo → Subárbol derecho → Nodo actual", "c": false}, {"text": "Nodo actual → Subárbol derecho → Subárbol izquierdo", "c": false}]}, {"text": "¿En qué orden se visitan los nodos en un recorrido PREORDEN?", "options": [{"text": "Nodo actual → Subárbol izquierdo → Subárbol derecho", "c": true}, {"text": "Subárbol izquierdo → Nodo actual → Subárbol derecho", "c": false}, {"text": "Subárbol izquierdo → Subárbol derecho → Nodo actual", "c": false}, {"text": "Nodo actual → Subárbol derecho → Subárbol izquierdo", "c": false}]}, {"text": "¿En qué orden se visitan los nodos en un recorrido POSTORDEN?", "options": [{"text": "Subárbol izquierdo → Subárbol derecho → Nodo actual", "c": true}, {"text": "Nodo actual → Subárbol izquierdo → Subárbol derecho", "c": false}, {"text": "Subárbol izquierdo → Nodo actual → Subárbol derecho", "c": false}, {"text": "Subárbol derecho → Nodo actual → Subárbol izquierdo", "c": false}]}, {"text": "¿Qué algoritmo usa el recorrido primero en ANCHURA (por niveles)?", "options": [{"text": "Usa una cola para visitar los nodos nivel por nivel", "c": true}, {"text": "Usa una pila para explorar hasta las hojas antes de retroceder", "c": false}, {"text": "Usa recursividad directa sobre cada subárbol", "c": false}, {"text": "Usa una tabla hash para registrar nodos visitados", "c": false}]}, {"text": "¿Qué es un Árbol Binario de Búsqueda (ABB)?", "options": [{"text": "Árbol binario donde para cada nodo, todos los valores del subárbol izquierdo son menores y los del derecho mayores o iguales", "c": true}, {"text": "Árbol binario donde los nodos están ordenados de mayor a menor de izquierda a derecha", "c": false}, {"text": "Árbol binario completo donde los nodos se insertan siempre en el nivel más bajo", "c": false}, {"text": "Árbol binario donde solo se puede buscar desde la raíz hacia las hojas", "c": false}]}, {"text": "¿Qué propiedad tiene el recorrido inorden sobre un ABB?", "options": [{"text": "Visita los nodos en orden ascendente de claves", "c": true}, {"text": "Visita los nodos en orden descendente de claves", "c": false}, {"text": "Visita los nodos de mayor a menor empezando por la raíz", "c": false}, {"text": "Visita los nodos en el orden en que fueron insertados", "c": false}]}, {"text": "¿Cuál es la complejidad de búsqueda en un ABB en el CASO MEDIO?", "options": [{"text": "O(log₂ n) con n claves insertadas aleatoriamente", "c": true}, {"text": "O(n) siempre", "c": false}, {"text": "O(1) si la clave es la raíz", "c": false}, {"text": "O(n log n) en todos los casos", "c": false}]}, {"text": "¿Cuál es la complejidad de búsqueda en un ABB en el PEOR CASO?", "options": [{"text": "O(n) — el árbol puede quedar muy desbalanceado (como una lista)", "c": true}, {"text": "O(log₂ n) — garantizado por la propiedad de orden", "c": false}, {"text": "O(n²) — comparación de todos los pares de nodos", "c": false}, {"text": "O(√n) — nivel medio del árbol", "c": false}]}, {"text": "Al borrar un nodo INTERNO con dos hijos en un ABB, ¿con qué se reemplaza?", "options": [{"text": "Con el nodo más a la izquierda del subárbol derecho O el más a la derecha del subárbol izquierdo", "c": true}, {"text": "Con el hijo izquierdo siempre", "c": false}, {"text": "Con el hijo derecho siempre", "c": false}, {"text": "Con el nodo hermano del nodo a borrar", "c": false}]}, {"text": "¿Qué es un árbol AVL?", "options": [{"text": "ABB equilibrado donde para todos los nodos la diferencia de alturas entre subárbol izq. y der. es máximo 1", "c": true}, {"text": "ABB donde todos los nodos tienen exactamente dos hijos", "c": false}, {"text": "Árbol binario completo que se balancea automáticamente cada vez que se inserta", "c": false}, {"text": "Árbol n-ario donde cada nodo tiene entre 2 y 4 hijos", "c": false}]}, {"text": "¿Qué es el Factor de Equilibrio (FE) de un nodo AVL?", "options": [{"text": "FE = altura del subárbol derecho − altura del subárbol izquierdo (válido: -1, 0 o +1)", "c": true}, {"text": "FE = número de hijos del nodo", "c": false}, {"text": "FE = profundidad del nodo en el árbol", "c": false}, {"text": "FE = altura del subárbol izquierdo − altura del subárbol derecho (válido: 0, 1 o 2)", "c": false}]}, {"text": "¿Cuándo se aplica la rotación simple a la DERECHA en un AVL?", "options": [{"text": "Cuando FE(nodo) = -2 y FE(hijo izquierdo) = -1 (desbalanceo a la izquierda-izquierda)", "c": true}, {"text": "Cuando FE(nodo) = +2 y FE(hijo derecho) = +1", "c": false}, {"text": "Cuando FE(nodo) = -2 y FE(hijo izquierdo) = +1", "c": false}, {"text": "Cuando FE(nodo) = +2 y FE(hijo derecho) = -1", "c": false}]}, {"text": "¿Cuándo se aplica la rotación DOBLE a la derecha en un AVL?", "options": [{"text": "Cuando FE(nodo) = -2 y FE(hijo izquierdo) = +1 (desbalanceo izquierda-derecha)", "c": true}, {"text": "Cuando FE(nodo) = -2 y FE(hijo izquierdo) = -1", "c": false}, {"text": "Cuando FE(nodo) = +2 y FE(hijo derecho) = +1", "c": false}, {"text": "Cuando FE(nodo) = +2 y FE(hijo derecho) = -1", "c": false}]}, {"text": "¿Cuántas rotaciones existen para reequilibrar un árbol AVL?", "options": [{"text": "4: simple derecha, simple izquierda, doble derecha, doble izquierda", "c": true}, {"text": "2: una a la derecha y una a la izquierda", "c": false}, {"text": "3: simple, doble y triple", "c": false}, {"text": "6: una por cada valor posible del factor de equilibrio", "c": false}]}, {"text": "¿Cuál es la garantía de complejidad de búsqueda en un árbol AVL?", "options": [{"text": "O(log₂ n) siempre, gracias al balanceo garantizado", "c": true}, {"text": "O(1) en el mejor caso y O(n) en el peor", "c": false}, {"text": "O(n) en todos los casos por el coste de rebalanceo", "c": false}, {"text": "O(log₂ n) solo si las claves se insertan aleatoriamente", "c": false}]}, {"text": "¿Para qué fueron diseñados los árboles B?", "options": [{"text": "Para indexación eficiente en almacenamiento externo (bases de datos), minimizando accesos a disco", "c": true}, {"text": "Para indexación en memoria RAM con alta velocidad de acceso", "c": false}, {"text": "Como alternativa a los AVL para árboles binarios equilibrados", "c": false}, {"text": "Para representar grafos dirigidos de forma compacta", "c": false}]}, {"text": "¿Qué significa que un árbol B sea de 'orden m'?", "options": [{"text": "Sus nodos pueden contener hasta m hijos (hasta m-1 claves por nodo)", "c": true}, {"text": "Su altura máxima es m", "c": false}, {"text": "Cada nodo tiene exactamente m claves", "c": false}, {"text": "El árbol puede almacenar hasta m elementos en total", "c": false}]}, {"text": "¿Cuántas claves tiene como mínimo cada nodo de un árbol B de orden m (excepto la raíz)?", "options": [{"text": "⌈(m-1)/2⌉ claves mínimas", "c": true}, {"text": "1 clave mínima", "c": false}, {"text": "m-1 claves mínimas (siempre lleno)", "c": false}, {"text": "2 claves mínimas independientemente de m", "c": false}]}, {"text": "¿Qué garantía estructural tienen todos los árboles B?", "options": [{"text": "Todas las hojas están en el mismo nivel", "c": true}, {"text": "Todos los nodos tienen el mismo número de claves", "c": false}, {"text": "El árbol es siempre un árbol binario perfecto", "c": false}, {"text": "La raíz siempre tiene el mayor número de claves", "c": false}]}, {"text": "¿Qué ocurre cuando se inserta en un nodo LLENO de un árbol B?", "options": [{"text": "El nodo se divide en dos; la clave mediana sube al nodo padre (que también puede dividirse)", "c": true}, {"text": "El nodo crece dinámicamente para acomodar la nueva clave", "c": false}, {"text": "La clave se inserta en el nodo hermano más cercano", "c": false}, {"text": "La inserción falla y se devuelve error de desbordamiento", "c": false}]}, {"text": "¿Por qué los árboles B son más adecuados que los AVL para bases de datos?", "options": [{"text": "Sus nodos múltiples se corresponden con páginas en disco, minimizando accesos; AVL requiere muchos accesos individuales", "c": true}, {"text": "Los árboles B son más rápidos en memoria RAM que los AVL", "c": false}, {"text": "Los árboles B no necesitan rebalanceo después de cada inserción", "c": false}, {"text": "Los árboles B tienen siempre menos altura que los AVL para el mismo número de claves", "c": false}]}, {"text": "¿Cuál es el resultado del recorrido inorden del siguiente árbol?\n    4\n   / \\\n  2   6\n / \\ / \\\n1  3 5  7", "options": [{"text": "1, 2, 3, 4, 5, 6, 7", "c": true}, {"text": "4, 2, 1, 3, 6, 5, 7", "c": false}, {"text": "1, 3, 2, 5, 7, 6, 4", "c": false}, {"text": "4, 2, 6, 1, 3, 5, 7", "c": false}], "code": "    4\n   / \\\n  2   6\n / \\ / \\\n1  3 5  7", "exp": "Inorden: izquierdo→raíz→derecho aplicado recursivamente da orden ascendente en un ABB."}, {"text": "¿Cuál es el resultado del recorrido preorden del árbol anterior?", "options": [{"text": "4, 2, 1, 3, 6, 5, 7", "c": true}, {"text": "1, 2, 3, 4, 5, 6, 7", "c": false}, {"text": "1, 3, 2, 5, 7, 6, 4", "c": false}, {"text": "4, 6, 5, 7, 2, 1, 3", "c": false}], "code": "    4\n   / \\\n  2   6\n / \\ / \\\n1  3 5  7", "exp": "Preorden: raíz→izquierdo→derecho: 4→2→1→3→6→5→7"}, {"text": "¿Cuál es la altura del árbol mostrado?", "options": [{"text": "2 (profundidad máxima: 0→1→2, contando desde 0)", "c": true}, {"text": "3 (hay 3 niveles contando desde 1)", "c": false}, {"text": "4 (número de nodos internos)", "c": false}, {"text": "1 (distancia entre la raíz y el primer nivel)", "c": false}], "code": "    4\n   / \\\n  2   6\n / \\ / \\\n1  3 5  7"}, {"text": "¿Cuándo se produce un 'arco de retroceso' en una búsqueda primero en profundidad sobre un grafo dirigido?", "options": [{"text": "Cuando el arco apunta de un nodo a uno de sus ancestros en el árbol de expansión", "c": true}, {"text": "Cuando el arco apunta de un nodo a uno de sus descendientes no directos", "c": false}, {"text": "Cuando el arco conecta dos nodos de distintos árboles del bosque de expansión", "c": false}, {"text": "Cuando el arco va al último nodo visitado", "c": false}]}, {"text": "¿Qué estructura se usa en el recorrido primero en PROFUNDIDAD?", "options": [{"text": "Una pila (explícita o mediante recursividad)", "c": true}, {"text": "Una cola", "c": false}, {"text": "Un array bidimensional", "c": false}, {"text": "Una tabla hash de nodos visitados", "c": false}]}, {"text": "¿Qué propiedad se requiere de los elementos para usar la representación hijo izquierdo-hermano derecho?", "options": [{"text": "Ninguna especial: sirve para cualquier árbol genérico independientemente del tipo de elementos", "c": true}, {"text": "Los elementos deben ser comparables (tener relación de orden)", "c": false}, {"text": "El árbol debe tener un grado máximo conocido en tiempo de compilación", "c": false}, {"text": "Los elementos deben ser de tipo entero para indexar los hijos", "c": false}]}, {"text": "¿Cuál es el objetivo principal de los árboles AVL frente a los ABB simples?", "options": [{"text": "Garantizar O(log n) en búsqueda/inserción/borrado evitando el peor caso O(n) de los ABB desbalanceados", "c": true}, {"text": "Permitir almacenar más claves por nodo que un ABB normal", "c": false}, {"text": "Facilitar el almacenamiento en disco reduciendo los accesos de E/S", "c": false}, {"text": "Eliminar la necesidad de recorrer el árbol para insertar", "c": false}]}];
+let qs=[],cur=0,ans=[];
+const LB=['A','B','C','D'];
+function sh(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;}
+function start(){
+  qs=sh(ALL).map(q=>{
+    const so=sh(q.options);
+    return{...q,options:so};
+  });
+  ans=new Array(qs.length).fill(null);
+  cur=0;
+  document.getElementById('res').style.display='none';
+  const qd=document.getElementById('quiz');
+  qd.querySelectorAll('.card').forEach(c=>c.remove());
+  qd.style.display='block';
+  qs.forEach((q,qi)=>{
+    const card=document.createElement('div');
+    card.className='card'+(qi===0?' on':'');
+    card.id='c'+qi;
+    let extra='';
+    if(q.code)extra+=`<div class="code">${q.code}</div>`;
+    card.innerHTML=`<div class="qt">${q.text}</div>${extra}<div class="opts" id="o${qi}">${
+      q.options.map((op,oi)=>`<div class="opt" onclick="pick(${qi},${oi})" id="op${qi}_${oi}">
+        <span class="ol">${LB[oi]}</span><span class="ot">${op.text}</span></div>`).join('')
+    }</div><div class="fb" id="fb${qi}"></div>
+    <div class="nav">
+      <button class="btn" onclick="go(-1)" ${qi===0?'disabled':''}>Anterior</button>
+      <span class="pg">${qi+1} / ${qs.length}</span>
+      <button class="btn pr" onclick="go(1)">${qi===qs.length-1?'Ver resultado':'Siguiente'}</button>
+    </div>`;
+    qd.appendChild(card);
+  });
+  show(0);
+}
+function show(i){
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('on'));
+  const c=document.getElementById('c'+i);if(c){c.classList.add('on');cur=i;}
+  document.getElementById('qc').textContent=`Pregunta ${i+1} de ${qs.length}`;
+  document.getElementById('pb').style.width=((i+1)/qs.length*100)+'%';
+}
+function go(d){const n=cur+d;if(n<0)return;if(n>=qs.length){showRes();return;}show(n);}
+function pick(qi,oi){
+  if(ans[qi]!==null)return;
+  ans[qi]=oi;
+  const ci=qs[qi].options.findIndex(o=>o.c);
+  if(oi===ci)beep(880,.32);else beep(240,.38);
+  qs[qi].options.forEach((_,i)=>{
+    const el=document.getElementById(`op${qi}_${i}`);
+    el.classList.add('done');
+    if(i===ci)el.classList.add('ok');
+    else if(i===oi)el.classList.add('bad');
+    else el.classList.add('dim');
+  });
+  if(qs[qi].exp){const fb=document.getElementById('fb'+qi);fb.textContent=qs[qi].exp;fb.classList.add('on');}
+}
+function showRes(){
+  document.getElementById('quiz').style.display='none';
+  document.getElementById('res').style.display='block';
+  let ok=0,ng=0;
+  ans.forEach((a,i)=>{if(a===null)return;const ci=qs[i].options.findIndex(o=>o.c);if(a===ci)ok++;else ng++;});
+  const tot=qs.length,pct=Math.round(ok/tot*100);
+  document.getElementById('pct').textContent=pct+'%';
+  document.getElementById('sok').textContent=ok;
+  document.getElementById('sng').textContent=ng;
+  document.getElementById('stot').textContent=tot;
+  document.getElementById('rdesc').textContent=pct>=90?'¡Excelente! Dominas el tema.':pct>=70?'Buen resultado. Repasa los fallos.':pct>=50?'Aprobado justo. Sigue repasando.':'Hay que estudiar más. ¡Tú puedes!';
+  setTimeout(()=>{document.getElementById('sc').style.strokeDashoffset=326.7-(pct/100)*326.7;},120);
+  document.getElementById('pb').style.width='100%';
+}
+start();
+</script>
+</body>
+</html>

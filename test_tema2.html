@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Abstracciones y Especificaciones</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#ffffff;--sf:#f7f7f7;--br:#e4e4e4;--tx:#111;--mx:#666;--ac:#111;--r:8px;--tr:180ms ease}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column}
+#pb{position:fixed;top:0;left:0;height:3px;background:var(--ac);transition:width 400ms ease;z-index:100}
+header{padding:2.5rem 2rem 1.5rem;border-bottom:1px solid var(--br);max-width:740px;margin:0 auto;width:100%}
+.sub{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mx);margin-bottom:.4rem}
+h1{font-size:1.55rem;font-weight:700;letter-spacing:-.02em}
+.bk{display:inline-block;margin-top:.6rem;font-size:.75rem;color:var(--mx);text-decoration:none;letter-spacing:.05em;text-transform:uppercase}
+.bk:hover{color:var(--tx)}
+main{max-width:740px;margin:0 auto;width:100%;padding:2rem;flex:1}
+.qc{font-size:.78rem;color:var(--mx);letter-spacing:.04em;margin-bottom:1.4rem}
+.card{display:none;animation:fi 220ms ease}
+.card.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.qt{font-size:1rem;line-height:1.7;font-weight:500;margin-bottom:1.4rem}
+.code{background:var(--sf);border:1px solid var(--br);border-radius:var(--r);padding:.9rem 1rem;font-family:'Fira Code',Consolas,monospace;font-size:.82rem;margin-bottom:1.1rem;line-height:1.55;overflow-x:auto;white-space:pre}
+.opts{display:flex;flex-direction:column;gap:.55rem}
+.opt{display:flex;align-items:flex-start;gap:.9rem;padding:.85rem 1rem;border:1px solid var(--br);border-radius:var(--r);cursor:pointer;transition:background var(--tr),border-color var(--tr)}
+.opt:hover:not(.done){background:var(--sf);border-color:#bbb}
+.ol{font-size:.72rem;font-weight:700;letter-spacing:.05em;min-width:16px;color:var(--mx);padding-top:2px}
+.ot{font-size:.92rem;line-height:1.5}
+.opt.ok{background:var(--ac);border-color:var(--ac);color:#fff}
+.opt.ok .ol{color:rgba(255,255,255,.65)}
+.opt.bad{background:#777;border-color:#777;color:#fff;opacity:.85}
+.opt.bad .ol{color:rgba(255,255,255,.65)}
+.opt.dim{opacity:.3;cursor:default}
+.opt.done{cursor:default}
+.fb{display:none;margin-top:.9rem;font-size:.83rem;color:var(--mx);line-height:1.55;padding:.75rem 1rem;border-left:3px solid var(--br)}
+.fb.on{display:block}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--br)}
+.pg{font-size:.78rem;color:var(--mx)}
+.btn{padding:.55rem 1.3rem;font-size:.85rem;font-weight:600;border:1px solid var(--ac);border-radius:var(--r);cursor:pointer;background:transparent;color:var(--tx);transition:background var(--tr),color var(--tr);letter-spacing:.02em}
+.btn:hover{background:var(--ac);color:#fff}
+.btn.pr{background:var(--ac);color:#fff}
+.btn.pr:hover{opacity:.8}
+.btn:disabled{opacity:.28;cursor:default}
+.btn:disabled:hover{background:transparent;color:var(--tx)}
+#res{display:none;text-align:center;padding:3rem 0;animation:fi 400ms ease}
+.ring{width:130px;height:130px;margin:0 auto 1.8rem}
+.ring svg{transform:rotate(-90deg)}
+.pct{font-size:2.4rem;font-weight:800;letter-spacing:-.04em;margin-bottom:.25rem}
+.desc{font-size:.88rem;color:var(--mx);margin-bottom:2.2rem}
+.stats{display:flex;justify-content:center;gap:2rem;margin-bottom:2.2rem;font-size:.83rem}
+.sv{font-size:1.35rem;font-weight:700;display:block}
+.sl{color:var(--mx)}
+</style>
+</head>
+<body>
+<div id="pb" style="width:0%"></div>
+<header>
+  <div class="sub">Estructuras de Datos — Tema 2</div>
+  <h1>Abstracciones y Especificaciones</h1>
+  <a class="bk" href="index.html">← Índice</a>
+</header>
+<main>
+  <div id="quiz">
+    <div class="qc" id="qc">Pregunta 1 de N</div>
+  </div>
+  <div id="res">
+    <div class="ring">
+      <svg viewBox="0 0 120 120" width="130" height="130">
+        <circle cx="60" cy="60" r="52" fill="none" stroke="#e8e8e8" stroke-width="9"/>
+        <circle cx="60" cy="60" r="52" fill="none" stroke="#111" stroke-width="9"
+          stroke-dasharray="326.7" stroke-dashoffset="326.7"
+          id="sc" stroke-linecap="round" style="transition:stroke-dashoffset 1.1s ease"/>
+      </svg>
+    </div>
+    <div class="pct" id="pct">0%</div>
+    <div class="desc" id="rdesc">—</div>
+    <div class="stats">
+      <div><span class="sv" id="sok">0</span><span class="sl">Correctas</span></div>
+      <div><span class="sv" id="sng">0</span><span class="sl">Incorrectas</span></div>
+      <div><span class="sv" id="stot">0</span><span class="sl">Total</span></div>
+    </div>
+    <button class="btn pr" onclick="start()">Repetir test</button><br>
+    <a class="bk" href="index.html" style="margin-top:1rem">← Índice</a>
+  </div>
+</main>
+<script>
+const AC=window.AudioContext||window.webkitAudioContext;let ax=null;
+function ga(){if(!ax)ax=new AC();return ax;}
+function beep(f,d){try{const c=ga(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.18,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
+const ALL=[{"text": "¿Cuáles son las 4 propiedades que debe cumplir una especificación de un TAD?", "options": [{"text": "Precisa, general, legible y no ambigua", "c": true}, {"text": "Completa, correcta, consistente y minimal", "c": false}, {"text": "Formal, informal, abstracta y concreta", "c": false}, {"text": "Rápida, eficiente, ejecutable y compilable", "c": false}]}, {"text": "¿Cuáles son los dos grandes tipos de notaciones de especificación?", "options": [{"text": "Notaciones informales (lenguaje natural) y formales (algebraicas u operacionales)", "c": true}, {"text": "Formales, informales, semiformales y gráficas", "c": false}, {"text": "Algebraicas, operacionales, lógicas y funcionales", "c": false}, {"text": "Precondiciones, postcondiciones, axiomas y contratos", "c": false}]}, {"text": "En la abstracción funcional informal, ¿qué indica la cláusula 'Requiere'?", "options": [{"text": "Las restricciones de uso que deben cumplirse para aplicar la operación", "c": true}, {"text": "El resultado que devuelve la operación", "c": false}, {"text": "Los datos de entrada que la operación modifica", "c": false}, {"text": "La descripción textual del comportamiento de la operación", "c": false}]}, {"text": "En la abstracción funcional informal, ¿qué indica la cláusula 'Calcula'?", "options": [{"text": "La descripción textual del comportamiento de la operación", "c": true}, {"text": "Las restricciones previas de los parámetros de entrada", "c": false}, {"text": "Los parámetros de entrada que se modifican", "c": false}, {"text": "El tipo de retorno de la función", "c": false}]}, {"text": "En la abstracción funcional informal, ¿qué indica la cláusula 'Modifica'?", "options": [{"text": "Los datos de entrada que la operación modifica", "c": true}, {"text": "Las condiciones previas necesarias para ejecutar la operación", "c": false}, {"text": "El valor calculado y devuelto por la operación", "c": false}, {"text": "Los parámetros formales de la función", "c": false}]}, {"text": "¿Cuál es la principal diferencia entre el método algebraico y el constructivo?", "options": [{"text": "El algebraico define el significado implícitamente mediante axiomas; el constructivo explícitamente mediante pre/postcondiciones", "c": true}, {"text": "El algebraico usa lógica de primer orden; el constructivo usa lenguaje natural", "c": false}, {"text": "El algebraico es más moderno y preciso que el constructivo", "c": false}, {"text": "El algebraico solo funciona para TADs lineales; el constructivo para árboles", "c": false}]}, {"text": "¿Qué son los 'constructores' en el método algebraico?", "options": [{"text": "El conjunto mínimo de operaciones a partir del cual se puede obtener cualquier valor del tipo T", "c": true}, {"text": "Las operaciones que devuelven un valor de tipo diferente a T", "c": false}, {"text": "Las operaciones que modifican valores existentes del tipo T", "c": false}, {"text": "Los axiomas base que definen el TAD", "c": false}]}, {"text": "¿Qué son las operaciones de 'consulta' en el método algebraico?", "options": [{"text": "Operaciones que devuelven un valor que NO es del tipo T", "c": true}, {"text": "Operaciones que crean instancias del tipo T desde cero", "c": false}, {"text": "Operaciones que transforman un valor de tipo T en otro de tipo T", "c": false}, {"text": "Operaciones que comparan dos valores del tipo T", "c": false}]}, {"text": "¿Cuáles son los constructores del TAD Natural en el método algebraico?", "options": [{"text": "cero y sucesor", "c": true}, {"text": "esCero e igual", "c": false}, {"text": "suma y producto", "c": false}, {"text": "sucesor e igual", "c": false}], "exp": "cero:→N y sucesor:N→N son los únicos constructores porque cualquier natural puede expresarse en términos de ellos."}, {"text": "¿Qué tipo de operación es 'suma' en el TAD Natural algebraico?", "options": [{"text": "Modificación (obtiene otro valor de tipo N pero no es constructor)", "c": true}, {"text": "Constructor (necesaria para construir cualquier natural)", "c": false}, {"text": "Consulta (devuelve un valor que no es de tipo N)", "c": false}, {"text": "Iterador (recorre los elementos del tipo)", "c": false}]}, {"text": "¿Qué tipo de operación es 'esCero' en el TAD Natural algebraico?", "options": [{"text": "Consulta (devuelve un booleano, no un valor de tipo N)", "c": true}, {"text": "Constructor (permite construir valores naturales)", "c": false}, {"text": "Modificación (transforma valores del tipo N)", "c": false}, {"text": "Modificación (devuelve un natural transformado)", "c": false}]}, {"text": "¿Cuánto vale esVacía(crearPila) en la especificación algebraica del TAD Pila?", "options": [{"text": "true", "c": true}, {"text": "false", "c": false}, {"text": "crearPila", "c": false}, {"text": "Error", "c": false}], "exp": "Axioma 1: esVacía(crearPila) = true"}, {"text": "¿Cuánto vale esVacía(push(t, s)) en la especificación algebraica?", "options": [{"text": "false", "c": true}, {"text": "true", "c": false}, {"text": "t", "c": false}, {"text": "s", "c": false}], "exp": "Axioma 2: esVacía(push(t,s)) = false — una pila con al menos un elemento nunca es vacía."}, {"text": "¿Cuánto vale pop(crearPila) en la especificación algebraica del TAD Pila?", "options": [{"text": "crearPila", "c": true}, {"text": "Error. La pila está vacía", "c": false}, {"text": "NULL", "c": false}, {"text": "false", "c": false}], "exp": "Axioma 3: pop(crearPila) = crearPila"}, {"text": "¿Cuánto vale pop(push(t, s)) en la especificación algebraica?", "options": [{"text": "s", "c": true}, {"text": "t", "c": false}, {"text": "push(t, s)", "c": false}, {"text": "crearPila", "c": false}], "exp": "Axioma 4: pop(push(t,s)) = s — pop elimina el tope y devuelve el resto de la pila."}, {"text": "¿Cuánto vale tope(push(t, s)) en la especificación algebraica?", "options": [{"text": "t", "c": true}, {"text": "s", "c": false}, {"text": "push(t, s)", "c": false}, {"text": "Error. La pila está vacía", "c": false}], "exp": "Axioma 6: tope(push(t,s)) = t — el tope es el último elemento insertado."}, {"text": "¿Cuánto vale tope(crearPila) en la especificación algebraica?", "options": [{"text": "\"Error. La pila está vacía\"", "c": true}, {"text": "crearPila", "c": false}, {"text": "NULL", "c": false}, {"text": "false", "c": false}], "exp": "Axioma 5: tope(crearPila) = 'Error. La pila está vacía'"}, {"text": "Calcula: tope(push(3, push(2, crearPila)))", "options": [{"text": "3", "c": true}, {"text": "2", "c": false}, {"text": "crearPila", "c": false}, {"text": "push(3, push(2, crearPila))", "c": false}], "code": "tope(push(3, push(2, crearPila)))", "exp": "tope(push(3,...)) = 3 por el axioma 6."}, {"text": "Calcula: pop(push(3, push(2, pop(crearPila))))", "options": [{"text": "push(2, crearPila)", "c": true}, {"text": "push(3, push(2, crearPila))", "c": false}, {"text": "crearPila", "c": false}, {"text": "push(2, pop(crearPila))", "c": false}], "code": "pop(push(3, push(2, pop(crearPila))))", "exp": "pop(crearPila)=crearPila → pop(push(3,push(2,crearPila)))=push(2,crearPila)"}, {"text": "¿Qué dos propiedades deben cumplir los axiomas de una especificación algebraica?", "options": [{"text": "Completitud (suficientes para deducir cualquier expresión) y corrección (una expresión → un único resultado)", "c": true}, {"text": "Simplicidad y eficiencia computacional", "c": false}, {"text": "Abstracción y encapsulación de operaciones", "c": false}, {"text": "Recursividad y terminación garantizada", "c": false}]}, {"text": "¿Cuándo termina la ejecución de una expresión en el método algebraico?", "options": [{"text": "Cuando ya no se pueden aplicar más reglas (queda expresada en función de los constructores)", "c": true}, {"text": "Cuando se han aplicado todos los axiomas disponibles al menos una vez", "c": false}, {"text": "Cuando el resultado es un valor booleano", "c": false}, {"text": "Cuando la expresión tiene menos de 3 operaciones anidadas", "c": false}]}, {"text": "¿Cuál es la visión del 'implementador' en el contrato de una especificación?", "options": [{"text": "Obligación: cumplir la postcondición. Derecho: que se cumpla la precondición", "c": true}, {"text": "Obligación: cumplir la precondición. Derecho: que se cumpla la postcondición", "c": false}, {"text": "Debe garantizar la operación incluso si la precondición no se cumple", "c": false}, {"text": "No tiene ninguna obligación formal, solo derechos sobre los datos", "c": false}]}, {"text": "¿Cuál es la visión del 'usuario' en el contrato de una especificación?", "options": [{"text": "Obligación: cumplir la precondición. Derecho: que se cumpla la postcondición", "c": true}, {"text": "Obligación: cumplir la postcondición. Derecho: que se cumpla la precondición", "c": false}, {"text": "Puede llamar a la operación sin cumplir la precondición si conoce la implementación", "c": false}, {"text": "No tiene ninguna obligación si la operación lanza una excepción", "c": false}]}, {"text": "Si no se cumple la precondición, ¿qué ocurre según el modelo de contrato?", "options": [{"text": "No se puede garantizar que se cumpla la postcondición", "c": true}, {"text": "La operación devuelve automáticamente un mensaje de error estándar", "c": false}, {"text": "El sistema lanza una excepción de tipo PreConditionError", "c": false}, {"text": "La operación se ejecuta pero devuelve un valor por defecto", "c": false}]}, {"text": "En el método constructivo, ¿qué es la precondición?", "options": [{"text": "Relación que deben cumplir los datos de entrada para que la operación pueda aplicarse", "c": true}, {"text": "El resultado garantizado después de ejecutar la operación", "c": false}, {"text": "La descripción textual del comportamiento esperado", "c": false}, {"text": "El conjunto de axiomas que definen el TAD", "c": false}]}, {"text": "En el método constructivo, ¿qué es la postcondición?", "options": [{"text": "Relaciones que se cumplen en los datos de salida después de ejecutar la operación", "c": true}, {"text": "Las restricciones que deben cumplir los datos de entrada", "c": false}, {"text": "El nombre y tipo de los parámetros formales", "c": false}, {"text": "La lista de efectos secundarios posibles de la operación", "c": false}]}, {"text": "En la especificación constructiva del TAD Pila con Lista como modelo subyacente, ¿qué establece post-crearPila(s)?", "options": [{"text": "s = crearLista", "c": true}, {"text": "s = NULL", "c": false}, {"text": "s = push(s, crearLista)", "c": false}, {"text": "s = esListaVacía(s)", "c": false}]}, {"text": "¿Cuál es la limitación principal de la especificación constructiva?", "options": [{"text": "Está limitada por la necesidad de modelos subyacentes para definir las operaciones", "c": true}, {"text": "No puede definir TADs genéricos con parámetros de tipo", "c": false}, {"text": "Solo funciona para TADs con un número fijo de operaciones", "c": false}, {"text": "No puede expresar precondiciones con múltiples condiciones lógicas", "c": false}]}, {"text": "¿Para qué sirve la parametrización de tipo en la especificación informal de datos?", "options": [{"text": "Para definir contenedores genéricos como Lista[T] en lugar de ListaEnteros, ListaCadenas, etc.", "c": true}, {"text": "Para ocultar los detalles de implementación del TAD", "c": false}, {"text": "Para especificar las precondiciones de las operaciones", "c": false}, {"text": "Para generar instancias concretas del TAD automáticamente", "c": false}]}, {"text": "¿Qué es una abstracción de iteradores?", "options": [{"text": "Un mecanismo que define un recorrido abstracto sobre los elementos de una colección", "c": true}, {"text": "Un tipo de clase abstracta que implementa múltiples interfaces", "c": false}, {"text": "Una técnica para acelerar el acceso a elementos de una lista enlazada", "c": false}, {"text": "Un método especial para ordenar colecciones en tiempo O(n log n)", "c": false}]}, {"text": "La especificación de máximo: post-máximo(x,y;r)::=(r≥x)∧(r≥y)∧(r=x∨r=y) es de tipo:", "options": [{"text": "Método constructivo (postcondición en lógica)", "c": true}, {"text": "Método algebraico (axioma de igualdad)", "c": false}, {"text": "Especificación informal de abstracción funcional", "c": false}, {"text": "Especificación informal de abstracción de datos", "c": false}]}, {"text": "¿Qué ventaja ofrece una especificación formal ejecutable?", "options": [{"text": "Permite prototipado: la especificación puede servir para verificar el comportamiento", "c": true}, {"text": "Elimina la necesidad de implementar el TAD completamente", "c": false}, {"text": "Garantiza que el código nunca tendrá errores en tiempo de ejecución", "c": false}, {"text": "Permite generar el código fuente automáticamente sin programador", "c": false}]}, {"text": "¿Por qué se dice que la implementación de un TAD es 'transparente' para el usuario?", "options": [{"text": "Porque no necesita conocerla para hacer un uso completo del tipo", "c": true}, {"text": "Porque el código fuente siempre está disponible en abierto", "c": false}, {"text": "Porque la implementación es idéntica en todos los lenguajes", "c": false}, {"text": "Porque el compilador la optimiza y hace invisible", "c": false}]}, {"text": "¿Cuál es la notación de la SINTAXIS en la especificación formal?", "options": [{"text": "<nombre_operación> : <conj_dominio> → <conj_resultado>", "c": true}, {"text": "Operación <nombre> (entrada <tipo>; salida <tipo>)", "c": false}, {"text": "pre-<nombre>(<param>) ::= <condición_lógica>", "c": false}, {"text": "def <nombre>(<params>) → <tipo_retorno>", "c": false}]}, {"text": "En la especificación algebraica del TAD Bolsa[I], ¿cuál podría ser la sintaxis de 'cuántos'?", "options": [{"text": "cuántos: S × I → N  (conjunto de bolsas × elemento → natural)", "c": true}, {"text": "cuántos: S → B  (conjunto de bolsas → booleano)", "c": false}, {"text": "cuántos: I → S  (elemento → bolsa)", "c": false}, {"text": "cuántos: S → I  (bolsa → elemento)", "c": false}]}, {"text": "En el ejemplo de QuitarDuplic[T], ¿qué indica 'Requiere: T debe tener una operación IgualQue'?", "options": [{"text": "Es una restricción sobre el tipo genérico: T debe soportar comparación de igualdad", "c": true}, {"text": "Es una postcondición: los duplicados deben estar eliminados", "c": false}, {"text": "Es una operación nueva que hay que añadir al TAD", "c": false}, {"text": "Indica que la operación solo funciona con tipos primitivos", "c": false}]}, {"text": "¿Qué forma tiene la parte de CONJUNTOS en la especificación formal algebraica del TAD Pila?", "options": [{"text": "S (pilas), T (elementos almacenables), B (booleanos)", "c": true}, {"text": "S (pilas), N (naturales), O (operaciones)", "c": false}, {"text": "T (tipos), V (valores), E (errores)", "c": false}, {"text": "S (pilas), T (topes), P (punteros)", "c": false}]}, {"text": "¿Por qué es más fácil incluir especificaciones constructivas en los programas que algebraicas?", "options": [{"text": "Porque las precondiciones y postcondiciones se corresponden directamente con aserciones del código", "c": true}, {"text": "Porque las constructivas no necesitan modelos subyacentes", "c": false}, {"text": "Porque las algebraicas requieren un intérprete especial para ejecutarse", "c": false}, {"text": "Porque las constructivas siempre tienen menos texto que las algebraicas", "c": false}]}, {"text": "¿Cuál de las siguientes describe correctamente las ventajas de la abstracción funcional?", "options": [{"text": "Generalización del concepto de operador, encapsulación y facilidad de cambiar partes localizadas", "c": true}, {"text": "Eliminación de toda dependencia entre módulos del programa", "c": false}, {"text": "Garantía de que no habrá errores en tiempo de ejecución", "c": false}, {"text": "Reducción automática del número de operaciones necesarias", "c": false}]}, {"text": "La implementación del TAD es 'totalmente independiente del lenguaje'. ¿Por qué?", "options": [{"text": "Porque la especificación define el comportamiento matemáticamente, sin referencia a ningún lenguaje concreto", "c": true}, {"text": "Porque todos los lenguajes modernos generan el mismo código máquina", "c": false}, {"text": "Porque los TADs nunca se implementan, solo se especifican", "c": false}, {"text": "Porque la especificación solo usa lenguaje natural", "c": false}]}, {"text": "¿Cuál es el problema principal de las especificaciones en lenguaje natural?", "options": [{"text": "Son ambiguas e imprecisas", "c": true}, {"text": "Son demasiado largas y difíciles de escribir", "c": false}, {"text": "No pueden expresar operaciones con múltiples parámetros", "c": false}, {"text": "No son entendibles por el programador no especializado", "c": false}]}, {"text": "En la especificación algebraica, ¿qué garantiza que los axiomas sean 'suficientes'?", "options": [{"text": "La completitud: deben ser los suficientes para deducir el significado de cualquier expresión", "c": true}, {"text": "La corrección: de una expresión solo se puede obtener un resultado", "c": false}, {"text": "La abstracción: los axiomas ocultan los detalles de implementación", "c": false}, {"text": "La consistencia: no deben existir axiomas contradictorios", "c": false}]}, {"text": "¿Qué ocurre si en la especificación algebraica tenemos axiomas que se pueden deducir de otros?", "options": [{"text": "Viola la propiedad de corrección: no deben incluirse axiomas redundantes", "c": true}, {"text": "Viola la propiedad de completitud: faltan axiomas necesarios", "c": false}, {"text": "No hay problema, los axiomas redundantes no afectan la especificación", "c": false}, {"text": "El compilador los elimina automáticamente durante la compilación", "c": false}]}];
+let qs=[],cur=0,ans=[];
+const LB=['A','B','C','D'];
+function sh(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;}
+function start(){
+  qs=sh(ALL).map(q=>{
+    const so=sh(q.options);
+    return{...q,options:so};
+  });
+  ans=new Array(qs.length).fill(null);
+  cur=0;
+  document.getElementById('res').style.display='none';
+  const qd=document.getElementById('quiz');
+  qd.querySelectorAll('.card').forEach(c=>c.remove());
+  qd.style.display='block';
+  qs.forEach((q,qi)=>{
+    const card=document.createElement('div');
+    card.className='card'+(qi===0?' on':'');
+    card.id='c'+qi;
+    let extra='';
+    if(q.code)extra+=`<div class="code">${q.code}</div>`;
+    card.innerHTML=`<div class="qt">${q.text}</div>${extra}<div class="opts" id="o${qi}">${
+      q.options.map((op,oi)=>`<div class="opt" onclick="pick(${qi},${oi})" id="op${qi}_${oi}">
+        <span class="ol">${LB[oi]}</span><span class="ot">${op.text}</span></div>`).join('')
+    }</div><div class="fb" id="fb${qi}"></div>
+    <div class="nav">
+      <button class="btn" onclick="go(-1)" ${qi===0?'disabled':''}>Anterior</button>
+      <span class="pg">${qi+1} / ${qs.length}</span>
+      <button class="btn pr" onclick="go(1)">${qi===qs.length-1?'Ver resultado':'Siguiente'}</button>
+    </div>`;
+    qd.appendChild(card);
+  });
+  show(0);
+}
+function show(i){
+  document.querySelectorAll('.card').forEach(c=>c.classList.remove('on'));
+  const c=document.getElementById('c'+i);if(c){c.classList.add('on');cur=i;}
+  document.getElementById('qc').textContent=`Pregunta ${i+1} de ${qs.length}`;
+  document.getElementById('pb').style.width=((i+1)/qs.length*100)+'%';
+}
+function go(d){const n=cur+d;if(n<0)return;if(n>=qs.length){showRes();return;}show(n);}
+function pick(qi,oi){
+  if(ans[qi]!==null)return;
+  ans[qi]=oi;
+  const ci=qs[qi].options.findIndex(o=>o.c);
+  if(oi===ci)beep(880,.32);else beep(240,.38);
+  qs[qi].options.forEach((_,i)=>{
+    const el=document.getElementById(`op${qi}_${i}`);
+    el.classList.add('done');
+    if(i===ci)el.classList.add('ok');
+    else if(i===oi)el.classList.add('bad');
+    else el.classList.add('dim');
+  });
+  if(qs[qi].exp){const fb=document.getElementById('fb'+qi);fb.textContent=qs[qi].exp;fb.classList.add('on');}
+}
+function showRes(){
+  document.getElementById('quiz').style.display='none';
+  document.getElementById('res').style.display='block';
+  let ok=0,ng=0;
+  ans.forEach((a,i)=>{if(a===null)return;const ci=qs[i].options.findIndex(o=>o.c);if(a===ci)ok++;else ng++;});
+  const tot=qs.length,pct=Math.round(ok/tot*100);
+  document.getElementById('pct').textContent=pct+'%';
+  document.getElementById('sok').textContent=ok;
+  document.getElementById('sng').textContent=ng;
+  document.getElementById('stot').textContent=tot;
+  document.getElementById('rdesc').textContent=pct>=90?'¡Excelente! Dominas el tema.':pct>=70?'Buen resultado. Repasa los fallos.':pct>=50?'Aprobado justo. Sigue repasando.':'Hay que estudiar más. ¡Tú puedes!';
+  setTimeout(()=>{document.getElementById('sc').style.strokeDashoffset=326.7-(pct/100)*326.7;},120);
+  document.getElementById('pb').style.width='100%';
+}
+start();
+</script>
+</body>
+</html>
