@@ -1,55 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>El TAD Conjunto</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#ffffff;--sf:#f7f7f7;--br:#e4e4e4;--tx:#111;--mx:#666;--ac:#111;--r:8px;--tr:180ms ease}
+:root{--bg:#fff;--sf:#f8f8f8;--br:#e4e4e4;--tx:#111;--mx:#777;--r:8px;--tr:160ms ease;
+      --ok:#16a34a;--ok2:#f0fdf4;--ng:#dc2626;--ng2:#fef2f2}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column}
-#pb{position:fixed;top:0;left:0;height:3px;background:var(--ac);transition:width 400ms ease;z-index:100}
-header{padding:2.5rem 2rem 1.5rem;border-bottom:1px solid var(--br);max-width:740px;margin:0 auto;width:100%}
-.sub{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mx);margin-bottom:.4rem}
-h1{font-size:1.55rem;font-weight:700;letter-spacing:-.02em}
-.bk{display:inline-block;margin-top:.6rem;font-size:.75rem;color:var(--mx);text-decoration:none;letter-spacing:.05em;text-transform:uppercase}
+#pb{position:fixed;top:0;left:0;height:3px;background:#111;transition:width 400ms ease;z-index:100}
+header{padding:2.5rem 2rem 1.4rem;border-bottom:1px solid var(--br);max-width:740px;margin:0 auto;width:100%}
+.sub{font-size:.71rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mx);margin-bottom:.35rem}
+h1{font-size:1.5rem;font-weight:700;letter-spacing:-.02em}
+.bk{display:inline-block;margin-top:.55rem;font-size:.71rem;color:var(--mx);text-decoration:none;letter-spacing:.05em;text-transform:uppercase}
 .bk:hover{color:var(--tx)}
 main{max-width:740px;margin:0 auto;width:100%;padding:2rem;flex:1}
-.qc{font-size:.78rem;color:var(--mx);letter-spacing:.04em;margin-bottom:1.4rem}
-.card{display:none;animation:fi 220ms ease}
-.card.on{display:block}
-@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.qt{font-size:1rem;line-height:1.7;font-weight:500;margin-bottom:1.4rem}
-.code{background:var(--sf);border:1px solid var(--br);border-radius:var(--r);padding:.9rem 1rem;font-family:'Fira Code',Consolas,monospace;font-size:.82rem;margin-bottom:1.1rem;line-height:1.55;overflow-x:auto;white-space:pre}
-.opts{display:flex;flex-direction:column;gap:.55rem}
-.opt{display:flex;align-items:flex-start;gap:.9rem;padding:.85rem 1rem;border:1px solid var(--br);border-radius:var(--r);cursor:pointer;transition:background var(--tr),border-color var(--tr)}
+.qc{font-size:.74rem;color:var(--mx);letter-spacing:.04em;margin-bottom:1.25rem}
+.card{display:none;animation:fi 200ms ease}.card.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.qt{font-size:1rem;line-height:1.7;font-weight:500;margin-bottom:1.25rem}
+.code{background:var(--sf);border:1px solid var(--br);border-radius:var(--r);padding:.85rem 1rem;font-family:Consolas,monospace;font-size:.81rem;margin-bottom:1rem;line-height:1.55;overflow-x:auto;white-space:pre}
+.opts{display:flex;flex-direction:column;gap:.5rem}
+.opt{display:flex;align-items:flex-start;gap:.85rem;padding:.78rem 1rem;border:1px solid var(--br);border-radius:var(--r);cursor:pointer;transition:background var(--tr),border-color var(--tr)}
 .opt:hover:not(.done){background:var(--sf);border-color:#bbb}
-.ol{font-size:.72rem;font-weight:700;letter-spacing:.05em;min-width:16px;color:var(--mx);padding-top:2px}
-.ot{font-size:.92rem;line-height:1.5}
-.opt.ok{background:var(--ac);border-color:var(--ac);color:#fff}
-.opt.ok .ol{color:rgba(255,255,255,.65)}
-.opt.bad{background:#777;border-color:#777;color:#fff;opacity:.85}
-.opt.bad .ol{color:rgba(255,255,255,.65)}
-.opt.dim{opacity:.3;cursor:default}
-.opt.done{cursor:default}
-.fb{display:none;margin-top:.9rem;font-size:.83rem;color:var(--mx);line-height:1.55;padding:.75rem 1rem;border-left:3px solid var(--br)}
-.fb.on{display:block}
-.nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--br)}
-.pg{font-size:.78rem;color:var(--mx)}
-.btn{padding:.55rem 1.3rem;font-size:.85rem;font-weight:600;border:1px solid var(--ac);border-radius:var(--r);cursor:pointer;background:transparent;color:var(--tx);transition:background var(--tr),color var(--tr);letter-spacing:.02em}
-.btn:hover{background:var(--ac);color:#fff}
-.btn.pr{background:var(--ac);color:#fff}
-.btn.pr:hover{opacity:.8}
-.btn:disabled{opacity:.28;cursor:default}
-.btn:disabled:hover{background:transparent;color:var(--tx)}
+.ol{font-size:.69rem;font-weight:700;letter-spacing:.05em;min-width:16px;color:var(--mx);padding-top:2px;flex-shrink:0}
+.ot{font-size:.9rem;line-height:1.5}
+.opt.ok{background:var(--ok);border-color:var(--ok);color:#fff}.opt.ok .ol{color:rgba(255,255,255,.6)}
+.opt.ng{background:var(--ng);border-color:var(--ng);color:#fff}.opt.ng .ol{color:rgba(255,255,255,.6)}
+.opt.dim{opacity:.26;cursor:default}.opt.done{cursor:default}
+.fb{display:none;margin-top:.8rem;font-size:.81rem;color:var(--mx);line-height:1.55;padding:.65rem 1rem;border-left:3px solid var(--br)}.fb.on{display:block}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.7rem;padding-top:1.3rem;border-top:1px solid var(--br)}
+.pg{font-size:.74rem;color:var(--mx)}
+.btn{padding:.48rem 1.2rem;font-size:.82rem;font-weight:600;border:1px solid #111;border-radius:var(--r);cursor:pointer;background:transparent;color:var(--tx);transition:background var(--tr),color var(--tr);letter-spacing:.02em}
+.btn:hover{background:#111;color:#fff}.btn.pr{background:#111;color:#fff}.btn.pr:hover{opacity:.8}
+.btn:disabled{opacity:.22;cursor:default}.btn:disabled:hover{background:transparent;color:var(--tx)}
 #res{display:none;text-align:center;padding:3rem 0;animation:fi 400ms ease}
-.ring{width:130px;height:130px;margin:0 auto 1.8rem}
+.ring{width:130px;height:130px;margin:0 auto 1.7rem}
 .ring svg{transform:rotate(-90deg)}
-.pct{font-size:2.4rem;font-weight:800;letter-spacing:-.04em;margin-bottom:.25rem}
-.desc{font-size:.88rem;color:var(--mx);margin-bottom:2.2rem}
-.stats{display:flex;justify-content:center;gap:2rem;margin-bottom:2.2rem;font-size:.83rem}
-.sv{font-size:1.35rem;font-weight:700;display:block}
-.sl{color:var(--mx)}
+.pct{font-size:2.3rem;font-weight:800;letter-spacing:-.04em;margin-bottom:.22rem}
+.rdesc{font-size:.87rem;color:var(--mx);margin-bottom:1.9rem}
+.stats{display:flex;justify-content:center;gap:2rem;margin-bottom:1.9rem;font-size:.81rem}
+.sv{font-size:1.3rem;font-weight:700;display:block}.sl{color:var(--mx)}
+.res-btns{display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;margin-bottom:1rem}
+#review{display:none}
+.rev-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;padding-bottom:.9rem;border-bottom:1px solid var(--br)}
+.rev-title{font-size:1.05rem;font-weight:700}
+.rq{margin-bottom:1.3rem;padding:1.15rem;border:1px solid var(--br);border-radius:10px;background:var(--sf)}
+.rq-num{font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--mx);margin-bottom:.35rem;display:flex;align-items:center;gap:.4rem}
+.badge{padding:.12rem .45rem;border-radius:4px;font-size:.66rem;font-weight:700}
+.badge.ok{background:var(--ok);color:#fff}.badge.ng{background:var(--ng);color:#fff}.badge.sk{background:#aaa;color:#fff}
+.rq-text{font-size:.93rem;font-weight:500;line-height:1.65;margin-bottom:.85rem}
+.rq-opt{display:flex;align-items:flex-start;gap:.7rem;padding:.48rem .7rem;border-radius:5px;font-size:.87rem;margin-bottom:.28rem;line-height:1.4}
+.rq-opt.ok{background:var(--ok2);color:var(--ok);font-weight:600}
+.rq-opt.ng{background:var(--ng2);color:var(--ng);font-weight:600}
+.rq-exp{margin-top:.55rem;font-size:.79rem;color:var(--mx);line-height:1.5;padding:.55rem .7rem;border-left:3px solid var(--br)}
 </style>
 </head>
 <body>
@@ -60,45 +64,62 @@ main{max-width:740px;margin:0 auto;width:100%;padding:2rem;flex:1}
   <a class="bk" href="index.html">← Índice</a>
 </header>
 <main>
-  <div id="quiz">
-    <div class="qc" id="qc">Pregunta 1 de N</div>
-  </div>
+  <div id="quiz"><div class="qc" id="qc">Cargando...</div></div>
+  
   <div id="res">
     <div class="ring">
       <svg viewBox="0 0 120 120" width="130" height="130">
         <circle cx="60" cy="60" r="52" fill="none" stroke="#e8e8e8" stroke-width="9"/>
         <circle cx="60" cy="60" r="52" fill="none" stroke="#111" stroke-width="9"
-          stroke-dasharray="326.7" stroke-dashoffset="326.7"
-          id="sc" stroke-linecap="round" style="transition:stroke-dashoffset 1.1s ease"/>
+          stroke-dasharray="326.7" stroke-dashoffset="326.7" id="sc"
+          stroke-linecap="round" style="transition:stroke-dashoffset 1.1s ease"/>
       </svg>
     </div>
     <div class="pct" id="pct">0%</div>
-    <div class="desc" id="rdesc">—</div>
+    <div class="rdesc" id="rdesc">—</div>
     <div class="stats">
       <div><span class="sv" id="sok">0</span><span class="sl">Correctas</span></div>
       <div><span class="sv" id="sng">0</span><span class="sl">Incorrectas</span></div>
-      <div><span class="sv" id="stot">0</span><span class="sl">Total</span></div>
+      <div><span class="sv" id="sskip">0</span><span class="sl">Sin responder</span></div>
     </div>
-    <button class="btn pr" onclick="start()">Repetir test</button><br>
-    <a class="bk" href="index.html" style="margin-top:1rem">← Índice</a>
+    <div class="res-btns">
+      <button class="btn pr" onclick="startReview()">Revisar respuestas</button>
+      <button class="btn" onclick="start()">Repetir test</button>
+      <button class="btn" onclick="exportPDF()">Descargar PDF</button>
+    </div>
+    <a class="bk" href="index.html">← Índice</a>
   </div>
+  <div id="review">
+    <div class="rev-hdr">
+      <div class="rev-title">Revisión del test</div>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn" onclick="exportPDF()">Descargar PDF</button>
+        <button class="btn pr" onclick="backToResults()">← Resultado</button>
+      </div>
+    </div>
+    <div id="rev-body"></div>
+  </div>
+
 </main>
 <script>
-const AC=window.AudioContext||window.webkitAudioContext;let ax=null;
-function ga(){if(!ax)ax=new AC();return ax;}
-function beep(f,d){try{const c=ga(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.18,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
-const ALL=[{"text": "¿Qué es un conjunto en matemáticas?", "options": [{"text": "Colección no ordenada de elementos distintos", "c": true}, {"text": "Secuencia ordenada de elementos homogéneos", "c": false}, {"text": "Estructura donde los elementos pueden repetirse", "c": false}, {"text": "Colección con acceso FIFO a sus elementos", "c": false}]}, {"text": "¿Cuál es la diferencia principal entre el TAD Conjunto y el TAD Lista?", "options": [{"text": "En el conjunto no hay orden de inserción y no se permiten duplicados; en la lista sí hay orden y se permiten", "c": true}, {"text": "El conjunto solo puede almacenar enteros; la lista cualquier tipo", "c": false}, {"text": "El conjunto admite duplicados; la lista no", "c": false}, {"text": "La lista es siempre más eficiente que el conjunto", "c": false}]}, {"text": "¿Qué significa la notación 'A ⊆ B'?", "options": [{"text": "Todo elemento de A también pertenece a B (A está contenido en B)", "c": true}, {"text": "A y B tienen exactamente los mismos elementos", "c": false}, {"text": "La unión de A y B da el conjunto universal", "c": false}, {"text": "A y B son conjuntos disjuntos (sin elementos comunes)", "c": false}]}, {"text": "¿Cuál es el conjunto vacío?", "options": [{"text": "El conjunto sin ningún elemento (∅ o {})", "c": true}, {"text": "El conjunto con un único elemento: {0}", "c": false}, {"text": "El conjunto que contiene al conjunto vacío: {∅}", "c": false}, {"text": "Un conjunto cuyo cardinal es indefinido", "c": false}]}, {"text": "¿Qué operación bit a bit implementa la UNIÓN de dos conjuntos en la representación de arrays de bits?", "options": [{"text": "OR inclusivo (|)", "c": true}, {"text": "AND (&)", "c": false}, {"text": "XOR (^)", "c": false}, {"text": "NOT (~)", "c": false}]}, {"text": "¿Qué operación bit a bit implementa la INTERSECCIÓN de dos conjuntos?", "options": [{"text": "AND (&)", "c": true}, {"text": "OR (|)", "c": false}, {"text": "XOR (^)", "c": false}, {"text": "NOT seguido de OR", "c": false}]}, {"text": "¿Cómo se implementa la DIFERENCIA A-B con arrays de bits?", "options": [{"text": "A & (~B)  —  AND de A con el complemento de B", "c": true}, {"text": "A | (~B)  —  OR de A con el complemento de B", "c": false}, {"text": "A ^ B  —  XOR de A y B", "c": false}, {"text": "(~A) & B  —  AND del complemento de A con B", "c": false}]}, {"text": "¿Qué operación bit a bit implementa la DIFERENCIA SIMÉTRICA (A-B)∪(B-A)?", "options": [{"text": "XOR (^)", "c": true}, {"text": "AND (&)", "c": false}, {"text": "OR (|)", "c": false}, {"text": "NOT (~) seguido de AND", "c": false}]}, {"text": "¿Cómo se comprueba la IGUALDAD de dos conjuntos en la representación de arrays de bits?", "options": [{"text": "Comparación directa: A == B", "c": true}, {"text": "A & B == A", "c": false}, {"text": "A | B == A", "c": false}, {"text": "(A ^ B) == 0xFF", "c": false}]}, {"text": "¿Cómo se verifica que A ⊆ B (A es subconjunto de B) con arrays de bits?", "options": [{"text": "(A & B) == A  —  la intersección de A y B debe ser igual a A", "c": true}, {"text": "A | B == B", "c": false}, {"text": "A ^ B == 0", "c": false}, {"text": "A == B", "c": false}]}, {"text": "¿Cómo se comprueba si x pertenece a un conjunto A representado como array de bits?", "options": [{"text": "(A >> x) % 2 == 1  —  desplazamiento a la derecha y test del bit de signo", "c": true}, {"text": "(A << x) % 2 == 1", "c": false}, {"text": "(A & x) == 1", "c": false}, {"text": "(A | x) == A", "c": false}]}, {"text": "¿Cómo se inserta el elemento x en un conjunto A representado como array de bits?", "options": [{"text": "A = A + (1 << x)  —  sumar el valor con el bit x a 1", "c": true}, {"text": "A = A | x", "c": false}, {"text": "A = A >> x", "c": false}, {"text": "A = A + x", "c": false}]}, {"text": "¿Cómo se borra el elemento x de un conjunto A representado como array de bits?", "options": [{"text": "A = A - (1 << x)  —  restar el valor con el bit x a 1", "c": true}, {"text": "A = A & (~x)", "c": false}, {"text": "A = A << x", "c": false}, {"text": "A = A ^ (1 << x)", "c": false}]}, {"text": "¿Cuál es la principal ventaja de la representación con arrays de bits?", "options": [{"text": "Todas las operaciones se ejecutan en tiempo O(1) y ocupa el menor espacio posible", "c": true}, {"text": "Admite cualquier rango de representación sin limitaciones", "c": false}, {"text": "No requiere conocer el tamaño del conjunto universal", "c": false}, {"text": "Es la más sencilla de implementar en cualquier lenguaje", "c": false}]}, {"text": "¿Cuál es el principal inconveniente de la representación con arrays de bits?", "options": [{"text": "El rango de representación es muy limitado (tamaño de la palabra del procesador)", "c": true}, {"text": "Las operaciones de unión e intersección son muy lentas", "c": false}, {"text": "Requiere mucha más memoria que otras representaciones", "c": false}, {"text": "No permite comprobar la pertenencia de un elemento", "c": false}]}, {"text": "En la representación con array de elementos (no bits), ¿cuál es el coste de la operación 'pertenece'?", "options": [{"text": "O(|A|) — hay que recorrer el array buscando el elemento", "c": true}, {"text": "O(1) — acceso directo por índice", "c": false}, {"text": "O(log|A|) — búsqueda binaria si está ordenado", "c": false}, {"text": "O(|A|²) — comparación de todos los pares", "c": false}]}, {"text": "En la representación con array, ¿cómo se implementa el BORRADO de elemento x?", "options": [{"text": "Se sustituye x por el último elemento del array y se decrementa el cardinal", "c": true}, {"text": "Se desplazan todos los elementos posteriores a x una posición a la izquierda", "c": false}, {"text": "Se marca la posición de x como vacía con un valor especial", "c": false}, {"text": "Se reconstruye el array completo sin el elemento x", "c": false}]}, {"text": "¿Cuál es el coste de las operaciones de UNIÓN e INTERSECCIÓN con array NO ordenado?", "options": [{"text": "O(|A|·|B|) porque por cada elemento de A hay que recorrer B para comprobar pertenencia", "c": true}, {"text": "O(|A|+|B|) gracias al recorrido paralelo de ambos arrays", "c": false}, {"text": "O(|A|) si |A| < |B|", "c": false}, {"text": "O(1) con acceso directo a los índices", "c": false}]}, {"text": "¿Cuál es la ventaja de usar listas enlazadas ORDENADAS sobre las no ordenadas para conjuntos?", "options": [{"text": "Unión, intersección y diferencia se ejecutan en O(|A|+|B|) con un único recorrido paralelo", "c": true}, {"text": "La inserción es siempre O(1) al ir al final de la lista", "c": false}, {"text": "No se necesita una cabecera ficticia ni centinela", "c": false}, {"text": "No hace falta comparar elementos durante el recorrido", "c": false}]}, {"text": "¿Qué es la 'cabecera ficticia' en la lista enlazada ordenada?", "options": [{"text": "Un nodo sin clave al inicio de la lista que evita el caso especial de insertar antes del primer elemento", "c": true}, {"text": "El primer nodo con datos reales de la lista", "c": false}, {"text": "Un nodo que almacena el tamaño de la lista", "c": false}, {"text": "Un puntero externo que apunta siempre al último nodo", "c": false}]}, {"text": "¿Qué es el 'centinela' en la lista enlazada ordenada?", "options": [{"text": "Un nodo al final de la lista que agiliza la búsqueda copiando la clave buscada para evitar comprobaciones de fin", "c": true}, {"text": "Un nodo al inicio que evita el caso especial de lista vacía", "c": false}, {"text": "Un contador que registra el número de operaciones realizadas", "c": false}, {"text": "Un marcador que indica el elemento de mayor valor del conjunto", "c": false}]}, {"text": "¿Cómo se inicializa la lista con cabecera ficticia y centinela cuando está vacía?", "options": [{"text": "cabecera.sig apunta al centinela; centinela.sig apunta a sí mismo", "c": true}, {"text": "cabecera.sig = NULL; centinela.sig = NULL", "c": false}, {"text": "cabecera.sig = centinela.sig = cabecera", "c": false}, {"text": "cabecera y centinela son el mismo nodo", "c": false}]}, {"text": "¿Cuál es el coste de operaciones como pertenencia, inserción y borrado en lista enlazada ordenada?", "options": [{"text": "O(|A|) — hay que recorrer la lista hasta encontrar o superar el elemento", "c": true}, {"text": "O(1) — gracias a la cabecera ficticia y el centinela", "c": false}, {"text": "O(log|A|) — la lista ordenada permite búsqueda binaria", "c": false}, {"text": "O(|A|²) — por la necesidad de mantener el orden", "c": false}]}, {"text": "¿Cuál es el coste de unión, intersección y diferencia con lista enlazada ordenada?", "options": [{"text": "O(|A|+|B|) — un único recorrido paralelo de ambas listas", "c": true}, {"text": "O(|A|·|B|) — por cada elemento de A se recorre B", "c": false}, {"text": "O(|A| log|B|) — búsqueda binaria en B para cada elemento de A", "c": false}, {"text": "O(1) con el algoritmo de fusión", "c": false}]}, {"text": "En la operación INTERSECCIÓN con listas ordenadas, ¿cuándo se añade un elemento al resultado?", "options": [{"text": "Cuando el elemento actual es igual en ambas listas (c1.elem == c2.elem)", "c": true}, {"text": "Cuando el elemento de A es menor que el de B", "c": false}, {"text": "Cuando el elemento de A es mayor que el de B", "c": false}, {"text": "Cuando se ha llegado al centinela de una de las dos listas", "c": false}]}, {"text": "En la operación DIFERENCIA A-B con listas ordenadas, ¿cuándo se añade un elemento de A al resultado?", "options": [{"text": "Cuando c1.elem < c2.elem (elemento de A es menor que el de B: no está en B)", "c": true}, {"text": "Cuando c1.elem == c2.elem (el elemento está en ambas listas)", "c": false}, {"text": "Cuando c1.elem > c2.elem (el elemento de A supera al de B)", "c": false}, {"text": "Siempre que se recorra un elemento de A", "c": false}]}, {"text": "¿Qué espacio en memoria ocupa el conjunto A con representación de lista enlazada?", "options": [{"text": "O(|A|) — proporcional al número de elementos del conjunto", "c": true}, {"text": "O(|U|) — proporcional al tamaño del conjunto universal", "c": false}, {"text": "O(|A|²) — por los punteros de doble enlace", "c": false}, {"text": "O(1) — independiente del número de elementos", "c": false}]}, {"text": "¿Por qué la representación de conjuntos con array de bits es muy eficiente para operaciones de conjunto?", "options": [{"text": "Porque la CPU puede operar sobre todos los bits a la vez en una sola instrucción", "c": true}, {"text": "Porque ocupa exactamente un bit por elemento", "c": false}, {"text": "Porque no requiere bucles para calcular unión o intersección", "c": false}, {"text": "Ambas A y C son correctas", "c": false}]}, {"text": "¿Cuál es la representación de A={2,3,6,7} en un array de 8 bits (bit más significativo a la izquierda)?", "options": [{"text": "11001100", "c": true}, {"text": "00110011", "c": false}, {"text": "11110000", "c": false}, {"text": "00001111", "c": false}], "exp": "Los bits en posiciones 2,3,6,7 (contando desde el bit menos significativo, derecha) valen 1."}, {"text": "Dado A=11001100 (8 bits) y B=10010100, ¿cuál es A & B (intersección)?", "options": [{"text": "10000100", "c": true}, {"text": "11011100", "c": false}, {"text": "01011000", "c": false}, {"text": "11111111", "c": false}], "code": "A = 11001100  (A={2,3,6,7})\nB = 10010100  (B={2,4,7})\nA & B = ?", "exp": "11001100 AND 10010100 = 10000100 → C={2,7}"}, {"text": "Dado A=11001100, ¿cuál es ~A (negación, complemento)?", "options": [{"text": "00110011", "c": true}, {"text": "11110000", "c": false}, {"text": "10101010", "c": false}, {"text": "11001101", "c": false}]}, {"text": "¿Cuál es el cardinal del conjunto representado por 10110010 (8 bits)?", "options": [{"text": "4 (hay 4 bits a 1)", "c": true}, {"text": "2 (el valor numérico en decimal es 178)", "c": false}, {"text": "8 (tamaño del array de bits)", "c": false}, {"text": "3 (número de bits a 0 contiguos)", "c": false}]}, {"text": "¿Cuál es el coste de la operación de pertenencia en la representación con array NO ordenado?", "options": [{"text": "O(n) — recorrido lineal buscando el elemento", "c": true}, {"text": "O(1) — acceso directo al índice", "c": false}, {"text": "O(log n) — búsqueda binaria", "c": false}, {"text": "O(n log n) — ordenación previa necesaria", "c": false}]}, {"text": "¿En qué se diferencia el borrado en la implementación con array respecto a la lista enlazada?", "options": [{"text": "Con array el borrado es O(n) por la búsqueda, pero O(1) para eliminar (sustituir por el último); con lista enlazada también O(n)", "c": true}, {"text": "Con array es siempre O(1); con lista enlazada es O(n)", "c": false}, {"text": "Con array es O(n²); con lista enlazada es O(n)", "c": false}, {"text": "Con array el borrado no es posible sin reconstruir todo el array", "c": false}]}, {"text": "¿Por qué se usa una cabecera ficticia en la inserción ordenada?", "options": [{"text": "Para evitar el caso especial de insertar antes del primer elemento real de la lista", "c": true}, {"text": "Para almacenar el número total de elementos", "c": false}, {"text": "Para hacer la búsqueda del centinela más rápida", "c": false}, {"text": "Para poder tener listas de longitud ilimitada", "c": false}]}, {"text": "En la operación de UNIÓN con listas ordenadas, si c1.elem == c2.elem, ¿qué se hace?", "options": [{"text": "Se añade el elemento una sola vez y se avanza en AMBAS listas", "c": true}, {"text": "Se añade el elemento dos veces (una por cada lista)", "c": false}, {"text": "Se avanza solo en la lista A y se ignora el de B", "c": false}, {"text": "Se avanza solo en la lista B y se ignora el de A", "c": false}]}, {"text": "¿Qué ocupa más memoria: la representación con array de bits o con lista enlazada?", "options": [{"text": "Depende: array de bits ocupa O(|U|); lista enlazada ocupa O(|A|). Más eficiente la lista cuando el conjunto es disperso", "c": true}, {"text": "Siempre la lista enlazada por los punteros extra", "c": false}, {"text": "Siempre el array de bits por almacenar todos los posibles valores", "c": false}, {"text": "Ambas ocupan exactamente lo mismo: O(|A|)", "c": false}]}, {"text": "En la operación 'subconjunto' con listas ordenadas, ¿qué indica que A NO es subconjunto de B?", "options": [{"text": "Que aparece c1.elem < c2.elem: hay un elemento en A que no está en B", "c": true}, {"text": "Que |A| > |B| (A tiene más elementos que B)", "c": false}, {"text": "Que c1.elem > c2.elem en algún momento del recorrido", "c": false}, {"text": "Que se llega al centinela de B antes que al de A", "c": false}]}, {"text": "¿Cuál es la conclusión del tema sobre el uso eficiente de conjuntos para grandes volúmenes?", "options": [{"text": "La lista enlazada es muy ineficiente para inserción/consulta individual; se recomienda tablas de dispersión o árboles", "c": true}, {"text": "El array de bits es siempre la mejor opción para cualquier caso de uso", "c": false}, {"text": "La lista no ordenada es suficientemente eficiente para la mayoría de aplicaciones", "c": false}, {"text": "El array ordenado es siempre mejor que la lista enlazada", "c": false}]}, {"text": "¿Cuál es el coste de 'igualdad' entre dos conjuntos implementados con array?", "options": [{"text": "O(|A|) si se comprueba primero el cardinal y luego si A ⊆ B", "c": true}, {"text": "O(|A|·|B|) siempre", "c": false}, {"text": "O(1) comparando los cardinals", "c": false}, {"text": "O(|A| + |B|) sin importar si los cardinals son distintos", "c": false}]}];
-let qs=[],cur=0,ans=[];
+const ALL=[{"text": "¿Qué es un conjunto en matemáticas?", "options": [{"text": "Colección no ordenada de elementos distintos", "c": true}, {"text": "Secuencia ordenada de elementos homogéneos", "c": false}, {"text": "Estructura donde los elementos pueden repetirse", "c": false}, {"text": "Colección con acceso FIFO a sus elementos", "c": false}], "d": 1, "t": 4}, {"text": "¿Cuál es la diferencia principal entre el TAD Conjunto y el TAD Lista?", "options": [{"text": "En el conjunto no hay orden de inserción y no se permiten duplicados; en la lista sí hay orden y se permiten", "c": true}, {"text": "El conjunto solo puede almacenar enteros; la lista cualquier tipo", "c": false}, {"text": "El conjunto admite duplicados; la lista no", "c": false}, {"text": "La lista es siempre más eficiente que el conjunto", "c": false}], "d": 1, "t": 4}, {"text": "¿Qué significa la notación 'A ⊆ B'?", "options": [{"text": "Todo elemento de A también pertenece a B (A está contenido en B)", "c": true}, {"text": "A y B tienen exactamente los mismos elementos", "c": false}, {"text": "La unión de A y B da el conjunto universal", "c": false}, {"text": "A y B son conjuntos disjuntos (sin elementos comunes)", "c": false}], "d": 1, "t": 4}, {"text": "¿Cuál es el conjunto vacío?", "options": [{"text": "El conjunto sin ningún elemento (∅ o {})", "c": true}, {"text": "El conjunto con un único elemento: {0}", "c": false}, {"text": "El conjunto que contiene al conjunto vacío: {∅}", "c": false}, {"text": "Un conjunto cuyo cardinal es indefinido", "c": false}], "d": 1, "t": 4}, {"text": "¿Qué operación bit a bit implementa la UNIÓN de dos conjuntos en la representación de arrays de bits?", "options": [{"text": "OR inclusivo (|)", "c": true}, {"text": "AND (&)", "c": false}, {"text": "XOR (^)", "c": false}, {"text": "NOT (~)", "c": false}], "d": 1, "t": 4}, {"text": "¿Qué operación bit a bit implementa la INTERSECCIÓN de dos conjuntos?", "options": [{"text": "AND (&)", "c": true}, {"text": "OR (|)", "c": false}, {"text": "XOR (^)", "c": false}, {"text": "NOT seguido de OR", "c": false}], "d": 1, "t": 4}, {"text": "¿Cómo se implementa la DIFERENCIA A-B con arrays de bits?", "options": [{"text": "A & (~B)  —  AND de A con el complemento de B", "c": true}, {"text": "A | (~B)  —  OR de A con el complemento de B", "c": false}, {"text": "A ^ B  —  XOR de A y B", "c": false}, {"text": "(~A) & B  —  AND del complemento de A con B", "c": false}], "d": 1, "t": 4}, {"text": "¿Qué operación bit a bit implementa la DIFERENCIA SIMÉTRICA (A-B)∪(B-A)?", "options": [{"text": "XOR (^)", "c": true}, {"text": "AND (&)", "c": false}, {"text": "OR (|)", "c": false}, {"text": "NOT (~) seguido de AND", "c": false}], "d": 1, "t": 4}, {"text": "¿Cómo se comprueba la IGUALDAD de dos conjuntos en la representación de arrays de bits?", "options": [{"text": "Comparación directa: A == B", "c": true}, {"text": "A & B == A", "c": false}, {"text": "A | B == A", "c": false}, {"text": "(A ^ B) == 0xFF", "c": false}], "d": 1, "t": 4}, {"text": "¿Cómo se verifica que A ⊆ B (A es subconjunto de B) con arrays de bits?", "options": [{"text": "(A & B) == A  —  la intersección de A y B debe ser igual a A", "c": true}, {"text": "A | B == B", "c": false}, {"text": "A ^ B == 0", "c": false}, {"text": "A == B", "c": false}], "d": 1, "t": 4}, {"text": "¿Cómo se comprueba si x pertenece a un conjunto A representado como array de bits?", "options": [{"text": "(A >> x) % 2 == 1  —  desplazamiento a la derecha y test del bit de signo", "c": true}, {"text": "(A << x) % 2 == 1", "c": false}, {"text": "(A & x) == 1", "c": false}, {"text": "(A | x) == A", "c": false}], "d": 1, "t": 4}, {"text": "¿Cómo se inserta el elemento x en un conjunto A representado como array de bits?", "options": [{"text": "A = A + (1 << x)  —  sumar el valor con el bit x a 1", "c": true}, {"text": "A = A | x", "c": false}, {"text": "A = A >> x", "c": false}, {"text": "A = A + x", "c": false}], "d": 1, "t": 4}, {"text": "¿Cómo se borra el elemento x de un conjunto A representado como array de bits?", "options": [{"text": "A = A - (1 << x)  —  restar el valor con el bit x a 1", "c": true}, {"text": "A = A & (~x)", "c": false}, {"text": "A = A << x", "c": false}, {"text": "A = A ^ (1 << x)", "c": false}], "d": 1, "t": 4}, {"text": "¿Cuál es la principal ventaja de la representación con arrays de bits?", "options": [{"text": "Todas las operaciones se ejecutan en tiempo O(1) y ocupa el menor espacio posible", "c": true}, {"text": "Admite cualquier rango de representación sin limitaciones", "c": false}, {"text": "No requiere conocer el tamaño del conjunto universal", "c": false}, {"text": "Es la más sencilla de implementar en cualquier lenguaje", "c": false}], "d": 1, "t": 4}, {"text": "¿Cuál es el principal inconveniente de la representación con arrays de bits?", "options": [{"text": "El rango de representación es muy limitado (tamaño de la palabra del procesador)", "c": true}, {"text": "Las operaciones de unión e intersección son muy lentas", "c": false}, {"text": "Requiere mucha más memoria que otras representaciones", "c": false}, {"text": "No permite comprobar la pertenencia de un elemento", "c": false}], "d": 1, "t": 4}, {"text": "En la representación con array de elementos (no bits), ¿cuál es el coste de la operación 'pertenece'?", "options": [{"text": "O(|A|) — hay que recorrer el array buscando el elemento", "c": true}, {"text": "O(1) — acceso directo por índice", "c": false}, {"text": "O(log|A|) — búsqueda binaria si está ordenado", "c": false}, {"text": "O(|A|²) — comparación de todos los pares", "c": false}], "d": 1, "t": 4}, {"text": "En la representación con array, ¿cómo se implementa el BORRADO de elemento x?", "options": [{"text": "Se sustituye x por el último elemento del array y se decrementa el cardinal", "c": true}, {"text": "Se desplazan todos los elementos posteriores a x una posición a la izquierda", "c": false}, {"text": "Se marca la posición de x como vacía con un valor especial", "c": false}, {"text": "Se reconstruye el array completo sin el elemento x", "c": false}], "d": 1, "t": 4}, {"text": "¿Cuál es el coste de las operaciones de UNIÓN e INTERSECCIÓN con array NO ordenado?", "options": [{"text": "O(|A|·|B|) porque por cada elemento de A hay que recorrer B para comprobar pertenencia", "c": true}, {"text": "O(|A|+|B|) gracias al recorrido paralelo de ambos arrays", "c": false}, {"text": "O(|A|) si |A| < |B|", "c": false}, {"text": "O(1) con acceso directo a los índices", "c": false}], "d": 1, "t": 4}, {"text": "¿Cuál es la ventaja de usar listas enlazadas ORDENADAS sobre las no ordenadas para conjuntos?", "options": [{"text": "Unión, intersección y diferencia se ejecutan en O(|A|+|B|) con un único recorrido paralelo", "c": true}, {"text": "La inserción es siempre O(1) al ir al final de la lista", "c": false}, {"text": "No se necesita una cabecera ficticia ni centinela", "c": false}, {"text": "No hace falta comparar elementos durante el recorrido", "c": false}], "d": 1, "t": 4}, {"text": "¿Qué es la 'cabecera ficticia' en la lista enlazada ordenada?", "options": [{"text": "Un nodo sin clave al inicio de la lista que evita el caso especial de insertar antes del primer elemento", "c": true}, {"text": "El primer nodo con datos reales de la lista", "c": false}, {"text": "Un nodo que almacena el tamaño de la lista", "c": false}, {"text": "Un puntero externo que apunta siempre al último nodo", "c": false}], "d": 1, "t": 4}, {"text": "¿Qué es el 'centinela' en la lista enlazada ordenada?", "options": [{"text": "Un nodo al final de la lista que agiliza la búsqueda copiando la clave buscada para evitar comprobaciones de fin", "c": true}, {"text": "Un nodo al inicio que evita el caso especial de lista vacía", "c": false}, {"text": "Un contador que registra el número de operaciones realizadas", "c": false}, {"text": "Un marcador que indica el elemento de mayor valor del conjunto", "c": false}], "d": 1, "t": 4}, {"text": "¿Cómo se inicializa la lista con cabecera ficticia y centinela cuando está vacía?", "options": [{"text": "cabecera.sig apunta al centinela; centinela.sig apunta a sí mismo", "c": true}, {"text": "cabecera.sig = NULL; centinela.sig = NULL", "c": false}, {"text": "cabecera.sig = centinela.sig = cabecera", "c": false}, {"text": "cabecera y centinela son el mismo nodo", "c": false}], "d": 1, "t": 4}, {"text": "¿Cuál es el coste de operaciones como pertenencia, inserción y borrado en lista enlazada ordenada?", "options": [{"text": "O(|A|) — hay que recorrer la lista hasta encontrar o superar el elemento", "c": true}, {"text": "O(1) — gracias a la cabecera ficticia y el centinela", "c": false}, {"text": "O(log|A|) — la lista ordenada permite búsqueda binaria", "c": false}, {"text": "O(|A|²) — por la necesidad de mantener el orden", "c": false}], "d": 1, "t": 4}, {"text": "¿Cuál es el coste de unión, intersección y diferencia con lista enlazada ordenada?", "options": [{"text": "O(|A|+|B|) — un único recorrido paralelo de ambas listas", "c": true}, {"text": "O(|A|·|B|) — por cada elemento de A se recorre B", "c": false}, {"text": "O(|A| log|B|) — búsqueda binaria en B para cada elemento de A", "c": false}, {"text": "O(1) con el algoritmo de fusión", "c": false}], "d": 1, "t": 4}, {"text": "En la operación INTERSECCIÓN con listas ordenadas, ¿cuándo se añade un elemento al resultado?", "options": [{"text": "Cuando el elemento actual es igual en ambas listas (c1.elem == c2.elem)", "c": true}, {"text": "Cuando el elemento de A es menor que el de B", "c": false}, {"text": "Cuando el elemento de A es mayor que el de B", "c": false}, {"text": "Cuando se ha llegado al centinela de una de las dos listas", "c": false}], "d": 1, "t": 4}, {"text": "En la operación DIFERENCIA A-B con listas ordenadas, ¿cuándo se añade un elemento de A al resultado?", "options": [{"text": "Cuando c1.elem < c2.elem (elemento de A es menor que el de B: no está en B)", "c": true}, {"text": "Cuando c1.elem == c2.elem (el elemento está en ambas listas)", "c": false}, {"text": "Cuando c1.elem > c2.elem (el elemento de A supera al de B)", "c": false}, {"text": "Siempre que se recorra un elemento de A", "c": false}], "d": 1, "t": 4}, {"text": "¿Qué espacio en memoria ocupa el conjunto A con representación de lista enlazada?", "options": [{"text": "O(|A|) — proporcional al número de elementos del conjunto", "c": true}, {"text": "O(|U|) — proporcional al tamaño del conjunto universal", "c": false}, {"text": "O(|A|²) — por los punteros de doble enlace", "c": false}, {"text": "O(1) — independiente del número de elementos", "c": false}], "d": 1, "t": 4}, {"text": "¿Por qué la representación de conjuntos con array de bits es muy eficiente para operaciones de conjunto?", "options": [{"text": "Porque la CPU puede operar sobre todos los bits a la vez en una sola instrucción", "c": true}, {"text": "Porque ocupa exactamente un bit por elemento", "c": false}, {"text": "Porque no requiere bucles para calcular unión o intersección", "c": false}, {"text": "Ambas A y C son correctas", "c": false}], "d": 1, "t": 4}, {"text": "¿Cuál es la representación de A={2,3,6,7} en un array de 8 bits (bit más significativo a la izquierda)?", "options": [{"text": "11001100", "c": true}, {"text": "00110011", "c": false}, {"text": "11110000", "c": false}, {"text": "00001111", "c": false}], "exp": "Los bits en posiciones 2,3,6,7 (contando desde el bit menos significativo, derecha) valen 1.", "d": 2, "t": 4}, {"text": "Dado A=11001100 (8 bits) y B=10010100, ¿cuál es A & B (intersección)?", "options": [{"text": "10000100", "c": true}, {"text": "11011100", "c": false}, {"text": "01011000", "c": false}, {"text": "11111111", "c": false}], "code": "A = 11001100  (A={2,3,6,7})\nB = 10010100  (B={2,4,7})\nA & B = ?", "exp": "11001100 AND 10010100 = 10000100 → C={2,7}", "d": 3, "t": 4}, {"text": "Dado A=11001100, ¿cuál es ~A (negación, complemento)?", "options": [{"text": "00110011", "c": true}, {"text": "11110000", "c": false}, {"text": "10101010", "c": false}, {"text": "11001101", "c": false}], "d": 1, "t": 4}, {"text": "¿Cuál es el cardinal del conjunto representado por 10110010 (8 bits)?", "options": [{"text": "4 (hay 4 bits a 1)", "c": true}, {"text": "2 (el valor numérico en decimal es 178)", "c": false}, {"text": "8 (tamaño del array de bits)", "c": false}, {"text": "3 (número de bits a 0 contiguos)", "c": false}], "d": 1, "t": 4}, {"text": "¿Cuál es el coste de la operación de pertenencia en la representación con array NO ordenado?", "options": [{"text": "O(n) — recorrido lineal buscando el elemento", "c": true}, {"text": "O(1) — acceso directo al índice", "c": false}, {"text": "O(log n) — búsqueda binaria", "c": false}, {"text": "O(n log n) — ordenación previa necesaria", "c": false}], "d": 1, "t": 4}, {"text": "¿En qué se diferencia el borrado en la implementación con array respecto a la lista enlazada?", "options": [{"text": "Con array el borrado es O(n) por la búsqueda, pero O(1) para eliminar (sustituir por el último); con lista enlazada también O(n)", "c": true}, {"text": "Con array es siempre O(1); con lista enlazada es O(n)", "c": false}, {"text": "Con array es O(n²); con lista enlazada es O(n)", "c": false}, {"text": "Con array el borrado no es posible sin reconstruir todo el array", "c": false}], "d": 1, "t": 4}, {"text": "¿Por qué se usa una cabecera ficticia en la inserción ordenada?", "options": [{"text": "Para evitar el caso especial de insertar antes del primer elemento real de la lista", "c": true}, {"text": "Para almacenar el número total de elementos", "c": false}, {"text": "Para hacer la búsqueda del centinela más rápida", "c": false}, {"text": "Para poder tener listas de longitud ilimitada", "c": false}], "d": 1, "t": 4}, {"text": "En la operación de UNIÓN con listas ordenadas, si c1.elem == c2.elem, ¿qué se hace?", "options": [{"text": "Se añade el elemento una sola vez y se avanza en AMBAS listas", "c": true}, {"text": "Se añade el elemento dos veces (una por cada lista)", "c": false}, {"text": "Se avanza solo en la lista A y se ignora el de B", "c": false}, {"text": "Se avanza solo en la lista B y se ignora el de A", "c": false}], "d": 1, "t": 4}, {"text": "¿Qué ocupa más memoria: la representación con array de bits o con lista enlazada?", "options": [{"text": "Depende: array de bits ocupa O(|U|); lista enlazada ocupa O(|A|). Más eficiente la lista cuando el conjunto es disperso", "c": true}, {"text": "Siempre la lista enlazada por los punteros extra", "c": false}, {"text": "Siempre el array de bits por almacenar todos los posibles valores", "c": false}, {"text": "Ambas ocupan exactamente lo mismo: O(|A|)", "c": false}], "d": 1, "t": 4}, {"text": "En la operación 'subconjunto' con listas ordenadas, ¿qué indica que A NO es subconjunto de B?", "options": [{"text": "Que aparece c1.elem < c2.elem: hay un elemento en A que no está en B", "c": true}, {"text": "Que |A| > |B| (A tiene más elementos que B)", "c": false}, {"text": "Que c1.elem > c2.elem en algún momento del recorrido", "c": false}, {"text": "Que se llega al centinela de B antes que al de A", "c": false}], "d": 1, "t": 4}, {"text": "¿Cuál es la conclusión del tema sobre el uso eficiente de conjuntos para grandes volúmenes?", "options": [{"text": "La lista enlazada es muy ineficiente para inserción/consulta individual; se recomienda tablas de dispersión o árboles", "c": true}, {"text": "El array de bits es siempre la mejor opción para cualquier caso de uso", "c": false}, {"text": "La lista no ordenada es suficientemente eficiente para la mayoría de aplicaciones", "c": false}, {"text": "El array ordenado es siempre mejor que la lista enlazada", "c": false}], "d": 1, "t": 4}, {"text": "¿Cuál es el coste de 'igualdad' entre dos conjuntos implementados con array?", "options": [{"text": "O(|A|) si se comprueba primero el cardinal y luego si A ⊆ B", "c": true}, {"text": "O(|A|·|B|) siempre", "c": false}, {"text": "O(1) comparando los cardinals", "c": false}, {"text": "O(|A| + |B|) sin importar si los cardinals son distintos", "c": false}], "d": 1, "t": 4}];
+const QUIZ_TITLE="El TAD Conjunto";
+
+const AC=window.AudioContext||window.webkitAudioContext;let _ax=null;
+function ga(){if(!_ax)_ax=new AC();return _ax;}
+function beep(f,d){try{const c=ga(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.14,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
 const LB=['A','B','C','D'];
+let qs=[],cur=0,ans=[];
+
 function sh(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;}
-function start(){
-  qs=sh(ALL).map(q=>{
-    const so=sh(q.options);
-    return{...q,options:so};
-  });
+
+function start(pool){
+  pool=pool||ALL;
+  qs=sh(pool).map(q=>({...q,options:sh(q.options)}));
   ans=new Array(qs.length).fill(null);
   cur=0;
   document.getElementById('res').style.display='none';
+  document.getElementById('review').style.display='none';
   const qd=document.getElementById('quiz');
   qd.querySelectorAll('.card').forEach(c=>c.remove());
   qd.style.display='block';
@@ -107,56 +128,132 @@ function start(){
     card.className='card'+(qi===0?' on':'');
     card.id='c'+qi;
     let extra='';
-    if(q.code)extra+=`<div class="code">${q.code}</div>`;
-    card.innerHTML=`<div class="qt">${q.text}</div>${extra}<div class="opts" id="o${qi}">${
-      q.options.map((op,oi)=>`<div class="opt" onclick="pick(${qi},${oi})" id="op${qi}_${oi}">
-        <span class="ol">${LB[oi]}</span><span class="ot">${op.text}</span></div>`).join('')
-    }</div><div class="fb" id="fb${qi}"></div>
-    <div class="nav">
-      <button class="btn" onclick="go(-1)" ${qi===0?'disabled':''}>Anterior</button>
-      <span class="pg">${qi+1} / ${qs.length}</span>
-      <button class="btn pr" onclick="go(1)">${qi===qs.length-1?'Ver resultado':'Siguiente'}</button>
-    </div>`;
+    if(q.code)extra=`<div class="code">${q.code}</div>`;
+    card.innerHTML=`<div class="qt">${q.text}</div>${extra}
+<div class="opts" id="o${qi}">${q.options.map((op,oi)=>
+  `<div class="opt" onclick="pick(${qi},${oi})" id="op${qi}_${oi}">
+   <span class="ol">${LB[oi]}</span><span class="ot">${op.text}</span></div>`).join('')}
+</div><div class="fb" id="fb${qi}"></div>
+<div class="nav">
+  <button class="btn" onclick="go(-1)"${qi===0?' disabled':''}>Anterior</button>
+  <span class="pg">${qi+1} / ${qs.length}</span>
+  <button class="btn pr" onclick="go(1)">${qi===qs.length-1?'Ver resultado':'Siguiente'}</button>
+</div>`;
     qd.appendChild(card);
   });
   show(0);
 }
+
 function show(i){
   document.querySelectorAll('.card').forEach(c=>c.classList.remove('on'));
   const c=document.getElementById('c'+i);if(c){c.classList.add('on');cur=i;}
   document.getElementById('qc').textContent=`Pregunta ${i+1} de ${qs.length}`;
   document.getElementById('pb').style.width=((i+1)/qs.length*100)+'%';
 }
+
 function go(d){const n=cur+d;if(n<0)return;if(n>=qs.length){showRes();return;}show(n);}
+
 function pick(qi,oi){
   if(ans[qi]!==null)return;
   ans[qi]=oi;
   const ci=qs[qi].options.findIndex(o=>o.c);
-  if(oi===ci)beep(880,.32);else beep(240,.38);
+  if(oi===ci)beep(880,.3);else beep(240,.38);
   qs[qi].options.forEach((_,i)=>{
     const el=document.getElementById(`op${qi}_${i}`);
     el.classList.add('done');
     if(i===ci)el.classList.add('ok');
-    else if(i===oi)el.classList.add('bad');
+    else if(i===oi)el.classList.add('ng');
     else el.classList.add('dim');
   });
   if(qs[qi].exp){const fb=document.getElementById('fb'+qi);fb.textContent=qs[qi].exp;fb.classList.add('on');}
 }
+
+function calcScore(){
+  let ok=0,ng=0,sk=0;
+  ans.forEach((a,i)=>{if(a===null){sk++;return;}const ci=qs[i].options.findIndex(o=>o.c);if(a===ci)ok++;else ng++;});
+  return{ok,ng,sk,tot:qs.length,pct:Math.round(ok/qs.length*100)};
+}
+
 function showRes(){
   document.getElementById('quiz').style.display='none';
+  document.getElementById('review').style.display='none';
   document.getElementById('res').style.display='block';
-  let ok=0,ng=0;
-  ans.forEach((a,i)=>{if(a===null)return;const ci=qs[i].options.findIndex(o=>o.c);if(a===ci)ok++;else ng++;});
-  const tot=qs.length,pct=Math.round(ok/tot*100);
+  const{ok,ng,sk,tot,pct}=calcScore();
   document.getElementById('pct').textContent=pct+'%';
   document.getElementById('sok').textContent=ok;
   document.getElementById('sng').textContent=ng;
-  document.getElementById('stot').textContent=tot;
-  document.getElementById('rdesc').textContent=pct>=90?'¡Excelente! Dominas el tema.':pct>=70?'Buen resultado. Repasa los fallos.':pct>=50?'Aprobado justo. Sigue repasando.':'Hay que estudiar más. ¡Tú puedes!';
+  document.getElementById('sskip').textContent=sk;
+  const desc=pct>=90?'¡Excelente! Dominas el tema.':pct>=70?'Buen resultado. Repasa los fallos.':pct>=50?'Aprobado justo. Sigue repasando.':'Hay que estudiar más. ¡Tú puedes!';
+  document.getElementById('rdesc').textContent=desc;
   setTimeout(()=>{document.getElementById('sc').style.strokeDashoffset=326.7-(pct/100)*326.7;},120);
   document.getElementById('pb').style.width='100%';
 }
+
+function backToResults(){document.getElementById('review').style.display='none';document.getElementById('res').style.display='block';}
+
+function startReview(){
+  document.getElementById('res').style.display='none';
+  document.getElementById('review').style.display='block';
+  const body=document.getElementById('rev-body');
+  body.innerHTML='';
+  qs.forEach((q,qi)=>{
+    const ci=q.options.findIndex(o=>o.c),ua=ans[qi];
+    const st=ua===null?'sk':ua===ci?'ok':'ng';
+    const bl=st==='ok'?'✓ Correcta':st==='ng'?'✗ Incorrecta':'Sin responder';
+    let h=`<div class="rq">
+<div class="rq-num">Pregunta ${qi+1} <span class="badge ${st}">${bl}</span></div>
+<div class="rq-text">${q.text}</div>`;
+    if(q.code)h+=`<div class="code">${q.code}</div>`;
+    q.options.forEach((op,oi)=>{
+      const cls=oi===ci?' ok':oi===ua?' ng':'';
+      const mk=oi===ci?' ✓':oi===ua?' ✗':'';
+      h+=`<div class="rq-opt${cls}"><span style="font-weight:700;min-width:20px">${LB[oi]})</span><span>${op.text}${mk}</span></div>`;
+    });
+    if(q.exp)h+=`<div class="rq-exp">💡 ${q.exp}</div>`;
+    h+='</div>';
+    body.innerHTML+=h;
+  });
+  window.scrollTo(0,0);
+}
+
+function exportPDF(){
+  const{ok,tot,pct}=calcScore();
+  let h=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+<title>Revisión</title><style>
+body{font-family:Arial,sans-serif;font-size:11.5pt;color:#111;max-width:680px;margin:36px auto;padding:0 18px}
+h1{font-size:16pt;margin-bottom:3px}
+.meta{color:#555;font-size:10pt;margin-bottom:22px;padding-bottom:10px;border-bottom:1px solid #ddd}
+.q{margin-bottom:18px;padding:10px 12px;border:1px solid #ddd;border-radius:6px;page-break-inside:avoid}
+.qn{font-size:8.5pt;color:#888;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.qt{font-weight:600;margin-bottom:7px;line-height:1.5}
+.qcode{background:#f5f5f5;border:1px solid #ddd;padding:7px 9px;font-family:Consolas,monospace;font-size:9.5pt;margin-bottom:7px;white-space:pre-wrap}
+.op{padding:2px 5px;margin-bottom:2px;border-radius:3px;font-size:10.5pt;line-height:1.4}
+.op.ok{background:#f0fdf4;color:#166534;font-weight:600}
+.op.ng{background:#fef2f2;color:#991b1b;font-weight:600}
+.exp{margin-top:5px;font-size:9pt;color:#555;padding:4px 7px;border-left:3px solid #ddd}
+@page{margin:1.5cm}
+</style></head><body>
+<h1>${QUIZ_TITLE}</h1>
+<div class="meta">Resultado: ${ok}/${tot} correctas · ${pct}% · Revisión completa</div>`;
+  qs.forEach((q,qi)=>{
+    const ci=q.options.findIndex(o=>o.c),ua=ans[qi];
+    const st=ua===null?'Sin responder':ua===ci?'✓ Correcta':'✗ Incorrecta';
+    h+=`<div class="q"><div class="qn">Pregunta ${qi+1} — ${st}</div><div class="qt">${q.text}</div>`;
+    if(q.code)h+=`<div class="qcode">${q.code}</div>`;
+    q.options.forEach((op,oi)=>{
+      const cls=oi===ci?' ok':oi===ua?' ng':'';
+      const mk=oi===ci?' ✓':oi===ua?' ✗':'';
+      h+=`<div class="op${cls}">${LB[oi]}) ${op.text}${mk}</div>`;
+    });
+    if(q.exp)h+=`<div class="exp">💡 ${q.exp}</div>`;
+    h+='</div>';
+  });
+  h+='</body></html>';
+  const w=window.open('','_blank');
+  w.document.write(h);w.document.close();
+  setTimeout(()=>w.print(),450);
+}
+
 start();
 </script>
-</body>
-</html>
+</body></html>

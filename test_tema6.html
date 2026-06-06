@@ -1,55 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Grafos: Conceptos y Algoritmos</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-:root{--bg:#ffffff;--sf:#f7f7f7;--br:#e4e4e4;--tx:#111;--mx:#666;--ac:#111;--r:8px;--tr:180ms ease}
+:root{--bg:#fff;--sf:#f8f8f8;--br:#e4e4e4;--tx:#111;--mx:#777;--r:8px;--tr:160ms ease;
+      --ok:#16a34a;--ok2:#f0fdf4;--ng:#dc2626;--ng2:#fef2f2}
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',system-ui,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh;display:flex;flex-direction:column}
-#pb{position:fixed;top:0;left:0;height:3px;background:var(--ac);transition:width 400ms ease;z-index:100}
-header{padding:2.5rem 2rem 1.5rem;border-bottom:1px solid var(--br);max-width:740px;margin:0 auto;width:100%}
-.sub{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mx);margin-bottom:.4rem}
-h1{font-size:1.55rem;font-weight:700;letter-spacing:-.02em}
-.bk{display:inline-block;margin-top:.6rem;font-size:.75rem;color:var(--mx);text-decoration:none;letter-spacing:.05em;text-transform:uppercase}
+#pb{position:fixed;top:0;left:0;height:3px;background:#111;transition:width 400ms ease;z-index:100}
+header{padding:2.5rem 2rem 1.4rem;border-bottom:1px solid var(--br);max-width:740px;margin:0 auto;width:100%}
+.sub{font-size:.71rem;letter-spacing:.1em;text-transform:uppercase;color:var(--mx);margin-bottom:.35rem}
+h1{font-size:1.5rem;font-weight:700;letter-spacing:-.02em}
+.bk{display:inline-block;margin-top:.55rem;font-size:.71rem;color:var(--mx);text-decoration:none;letter-spacing:.05em;text-transform:uppercase}
 .bk:hover{color:var(--tx)}
 main{max-width:740px;margin:0 auto;width:100%;padding:2rem;flex:1}
-.qc{font-size:.78rem;color:var(--mx);letter-spacing:.04em;margin-bottom:1.4rem}
-.card{display:none;animation:fi 220ms ease}
-.card.on{display:block}
-@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.qt{font-size:1rem;line-height:1.7;font-weight:500;margin-bottom:1.4rem}
-.code{background:var(--sf);border:1px solid var(--br);border-radius:var(--r);padding:.9rem 1rem;font-family:'Fira Code',Consolas,monospace;font-size:.82rem;margin-bottom:1.1rem;line-height:1.55;overflow-x:auto;white-space:pre}
-.opts{display:flex;flex-direction:column;gap:.55rem}
-.opt{display:flex;align-items:flex-start;gap:.9rem;padding:.85rem 1rem;border:1px solid var(--br);border-radius:var(--r);cursor:pointer;transition:background var(--tr),border-color var(--tr)}
+.qc{font-size:.74rem;color:var(--mx);letter-spacing:.04em;margin-bottom:1.25rem}
+.card{display:none;animation:fi 200ms ease}.card.on{display:block}
+@keyframes fi{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+.qt{font-size:1rem;line-height:1.7;font-weight:500;margin-bottom:1.25rem}
+.code{background:var(--sf);border:1px solid var(--br);border-radius:var(--r);padding:.85rem 1rem;font-family:Consolas,monospace;font-size:.81rem;margin-bottom:1rem;line-height:1.55;overflow-x:auto;white-space:pre}
+.opts{display:flex;flex-direction:column;gap:.5rem}
+.opt{display:flex;align-items:flex-start;gap:.85rem;padding:.78rem 1rem;border:1px solid var(--br);border-radius:var(--r);cursor:pointer;transition:background var(--tr),border-color var(--tr)}
 .opt:hover:not(.done){background:var(--sf);border-color:#bbb}
-.ol{font-size:.72rem;font-weight:700;letter-spacing:.05em;min-width:16px;color:var(--mx);padding-top:2px}
-.ot{font-size:.92rem;line-height:1.5}
-.opt.ok{background:var(--ac);border-color:var(--ac);color:#fff}
-.opt.ok .ol{color:rgba(255,255,255,.65)}
-.opt.bad{background:#777;border-color:#777;color:#fff;opacity:.85}
-.opt.bad .ol{color:rgba(255,255,255,.65)}
-.opt.dim{opacity:.3;cursor:default}
-.opt.done{cursor:default}
-.fb{display:none;margin-top:.9rem;font-size:.83rem;color:var(--mx);line-height:1.55;padding:.75rem 1rem;border-left:3px solid var(--br)}
-.fb.on{display:block}
-.nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.8rem;padding-top:1.4rem;border-top:1px solid var(--br)}
-.pg{font-size:.78rem;color:var(--mx)}
-.btn{padding:.55rem 1.3rem;font-size:.85rem;font-weight:600;border:1px solid var(--ac);border-radius:var(--r);cursor:pointer;background:transparent;color:var(--tx);transition:background var(--tr),color var(--tr);letter-spacing:.02em}
-.btn:hover{background:var(--ac);color:#fff}
-.btn.pr{background:var(--ac);color:#fff}
-.btn.pr:hover{opacity:.8}
-.btn:disabled{opacity:.28;cursor:default}
-.btn:disabled:hover{background:transparent;color:var(--tx)}
+.ol{font-size:.69rem;font-weight:700;letter-spacing:.05em;min-width:16px;color:var(--mx);padding-top:2px;flex-shrink:0}
+.ot{font-size:.9rem;line-height:1.5}
+.opt.ok{background:var(--ok);border-color:var(--ok);color:#fff}.opt.ok .ol{color:rgba(255,255,255,.6)}
+.opt.ng{background:var(--ng);border-color:var(--ng);color:#fff}.opt.ng .ol{color:rgba(255,255,255,.6)}
+.opt.dim{opacity:.26;cursor:default}.opt.done{cursor:default}
+.fb{display:none;margin-top:.8rem;font-size:.81rem;color:var(--mx);line-height:1.55;padding:.65rem 1rem;border-left:3px solid var(--br)}.fb.on{display:block}
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.7rem;padding-top:1.3rem;border-top:1px solid var(--br)}
+.pg{font-size:.74rem;color:var(--mx)}
+.btn{padding:.48rem 1.2rem;font-size:.82rem;font-weight:600;border:1px solid #111;border-radius:var(--r);cursor:pointer;background:transparent;color:var(--tx);transition:background var(--tr),color var(--tr);letter-spacing:.02em}
+.btn:hover{background:#111;color:#fff}.btn.pr{background:#111;color:#fff}.btn.pr:hover{opacity:.8}
+.btn:disabled{opacity:.22;cursor:default}.btn:disabled:hover{background:transparent;color:var(--tx)}
 #res{display:none;text-align:center;padding:3rem 0;animation:fi 400ms ease}
-.ring{width:130px;height:130px;margin:0 auto 1.8rem}
+.ring{width:130px;height:130px;margin:0 auto 1.7rem}
 .ring svg{transform:rotate(-90deg)}
-.pct{font-size:2.4rem;font-weight:800;letter-spacing:-.04em;margin-bottom:.25rem}
-.desc{font-size:.88rem;color:var(--mx);margin-bottom:2.2rem}
-.stats{display:flex;justify-content:center;gap:2rem;margin-bottom:2.2rem;font-size:.83rem}
-.sv{font-size:1.35rem;font-weight:700;display:block}
-.sl{color:var(--mx)}
+.pct{font-size:2.3rem;font-weight:800;letter-spacing:-.04em;margin-bottom:.22rem}
+.rdesc{font-size:.87rem;color:var(--mx);margin-bottom:1.9rem}
+.stats{display:flex;justify-content:center;gap:2rem;margin-bottom:1.9rem;font-size:.81rem}
+.sv{font-size:1.3rem;font-weight:700;display:block}.sl{color:var(--mx)}
+.res-btns{display:flex;flex-wrap:wrap;justify-content:center;gap:.55rem;margin-bottom:1rem}
+#review{display:none}
+.rev-hdr{display:flex;justify-content:space-between;align-items:center;margin-bottom:1.4rem;padding-bottom:.9rem;border-bottom:1px solid var(--br)}
+.rev-title{font-size:1.05rem;font-weight:700}
+.rq{margin-bottom:1.3rem;padding:1.15rem;border:1px solid var(--br);border-radius:10px;background:var(--sf)}
+.rq-num{font-size:.68rem;letter-spacing:.05em;text-transform:uppercase;color:var(--mx);margin-bottom:.35rem;display:flex;align-items:center;gap:.4rem}
+.badge{padding:.12rem .45rem;border-radius:4px;font-size:.66rem;font-weight:700}
+.badge.ok{background:var(--ok);color:#fff}.badge.ng{background:var(--ng);color:#fff}.badge.sk{background:#aaa;color:#fff}
+.rq-text{font-size:.93rem;font-weight:500;line-height:1.65;margin-bottom:.85rem}
+.rq-opt{display:flex;align-items:flex-start;gap:.7rem;padding:.48rem .7rem;border-radius:5px;font-size:.87rem;margin-bottom:.28rem;line-height:1.4}
+.rq-opt.ok{background:var(--ok2);color:var(--ok);font-weight:600}
+.rq-opt.ng{background:var(--ng2);color:var(--ng);font-weight:600}
+.rq-exp{margin-top:.55rem;font-size:.79rem;color:var(--mx);line-height:1.5;padding:.55rem .7rem;border-left:3px solid var(--br)}
 </style>
 </head>
 <body>
@@ -60,45 +64,62 @@ main{max-width:740px;margin:0 auto;width:100%;padding:2rem;flex:1}
   <a class="bk" href="index.html">← Índice</a>
 </header>
 <main>
-  <div id="quiz">
-    <div class="qc" id="qc">Pregunta 1 de N</div>
-  </div>
+  <div id="quiz"><div class="qc" id="qc">Cargando...</div></div>
+  
   <div id="res">
     <div class="ring">
       <svg viewBox="0 0 120 120" width="130" height="130">
         <circle cx="60" cy="60" r="52" fill="none" stroke="#e8e8e8" stroke-width="9"/>
         <circle cx="60" cy="60" r="52" fill="none" stroke="#111" stroke-width="9"
-          stroke-dasharray="326.7" stroke-dashoffset="326.7"
-          id="sc" stroke-linecap="round" style="transition:stroke-dashoffset 1.1s ease"/>
+          stroke-dasharray="326.7" stroke-dashoffset="326.7" id="sc"
+          stroke-linecap="round" style="transition:stroke-dashoffset 1.1s ease"/>
       </svg>
     </div>
     <div class="pct" id="pct">0%</div>
-    <div class="desc" id="rdesc">—</div>
+    <div class="rdesc" id="rdesc">—</div>
     <div class="stats">
       <div><span class="sv" id="sok">0</span><span class="sl">Correctas</span></div>
       <div><span class="sv" id="sng">0</span><span class="sl">Incorrectas</span></div>
-      <div><span class="sv" id="stot">0</span><span class="sl">Total</span></div>
+      <div><span class="sv" id="sskip">0</span><span class="sl">Sin responder</span></div>
     </div>
-    <button class="btn pr" onclick="start()">Repetir test</button><br>
-    <a class="bk" href="index.html" style="margin-top:1rem">← Índice</a>
+    <div class="res-btns">
+      <button class="btn pr" onclick="startReview()">Revisar respuestas</button>
+      <button class="btn" onclick="start()">Repetir test</button>
+      <button class="btn" onclick="exportPDF()">Descargar PDF</button>
+    </div>
+    <a class="bk" href="index.html">← Índice</a>
   </div>
+  <div id="review">
+    <div class="rev-hdr">
+      <div class="rev-title">Revisión del test</div>
+      <div style="display:flex;gap:.5rem">
+        <button class="btn" onclick="exportPDF()">Descargar PDF</button>
+        <button class="btn pr" onclick="backToResults()">← Resultado</button>
+      </div>
+    </div>
+    <div id="rev-body"></div>
+  </div>
+
 </main>
 <script>
-const AC=window.AudioContext||window.webkitAudioContext;let ax=null;
-function ga(){if(!ax)ax=new AC();return ax;}
-function beep(f,d){try{const c=ga(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.18,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
-const ALL=[{"text": "¿Cómo se define formalmente un grafo G?", "options": [{"text": "G = (V, A), donde V es un conjunto no vacío de vértices y A es un conjunto de aristas (pares de vértices)", "c": true}, {"text": "G = (N, E), donde N son los nodos con pesos y E son las etiquetas de las aristas", "c": false}, {"text": "G = (V, A, P), donde V son vértices, A aristas y P pesos obligatorios", "c": false}, {"text": "G = (R, S), donde R es la raíz y S son los subgrafos", "c": false}]}, {"text": "¿Cuál es la diferencia entre grafo dirigido y no dirigido?", "options": [{"text": "En el no dirigido (v,w)=(w,v); en el dirigido ⟨v,w⟩≠⟨w,v⟩ (las aristas tienen sentido)", "c": true}, {"text": "En el dirigido los nodos tienen pesos; en el no dirigido las aristas los tienen", "c": false}, {"text": "En el no dirigido puede haber ciclos; en el dirigido no", "c": false}, {"text": "En el dirigido todos los nodos tienen el mismo grado de salida", "c": false}]}, {"text": "¿Qué es un grafo etiquetado o con pesos?", "options": [{"text": "Un grafo G=(V,A,W) donde W:A→TipoEtiqueta asigna un valor a cada arista", "c": true}, {"text": "Un grafo donde cada vértice tiene un nombre único", "c": false}, {"text": "Un grafo donde las aristas están ordenadas por peso ascendente", "c": false}, {"text": "Un grafo donde los pesos representan el número de vértices adyacentes", "c": false}]}, {"text": "¿Qué es un camino en un grafo?", "options": [{"text": "Secuencia de vértices w₁,w₂,...,wₙ tal que todas las aristas (wᵢ,wᵢ₊₁) pertenecen a A", "c": true}, {"text": "Cualquier subconjunto de aristas del grafo", "c": false}, {"text": "La arista de menor coste entre dos vértices", "c": false}, {"text": "Un recorrido que visita todos los vértices exactamente una vez", "c": false}]}, {"text": "¿Qué es la longitud de un camino?", "options": [{"text": "El número de aristas del camino (número de nodos menos 1)", "c": true}, {"text": "La suma de los pesos de las aristas del camino", "c": false}, {"text": "El número de nodos distintos del camino", "c": false}, {"text": "La distancia euclidiana entre el origen y el destino", "c": false}]}, {"text": "¿Qué es un ciclo en un grafo?", "options": [{"text": "Camino en el que el primer y el último vértice son iguales", "c": true}, {"text": "Camino que pasa por todos los vértices del grafo", "c": false}, {"text": "Arista que conecta un nodo consigo mismo (bucle)", "c": false}, {"text": "Camino de longitud máxima entre dos vértices", "c": false}]}, {"text": "¿Cuándo se dice que un grafo es CONEXO?", "options": [{"text": "Cuando existe un camino entre cualquier par de vértices", "c": true}, {"text": "Cuando tiene exactamente un ciclo simple", "c": false}, {"text": "Cuando todos los vértices tienen el mismo grado", "c": false}, {"text": "Cuando es un árbol de expansión de otro grafo mayor", "c": false}]}, {"text": "¿Qué es el GRADO de un vértice v en un grafo no dirigido?", "options": [{"text": "El número de aristas que inciden en v", "c": true}, {"text": "El número de vértices adyacentes a los que v apunta", "c": false}, {"text": "La longitud del camino más corto desde v a cualquier otro vértice", "c": false}, {"text": "El número de ciclos que pasan por v", "c": false}]}, {"text": "En un grafo DIRIGIDO, ¿qué es el grado de ENTRADA de v?", "options": [{"text": "El número de aristas ⟨x,v⟩ (aristas que llegan a v)", "c": true}, {"text": "El número de aristas ⟨v,x⟩ (aristas que salen de v)", "c": false}, {"text": "El número total de aristas que inciden en v", "c": false}, {"text": "La suma del grado de entrada y de salida de v", "c": false}]}, {"text": "¿Cuántas aristas tiene un grafo NO DIRIGIDO completo con n nodos?", "options": [{"text": "n(n-1)/2", "c": true}, {"text": "n(n-1)", "c": false}, {"text": "n²", "c": false}, {"text": "2n-1", "c": false}]}, {"text": "¿Cuántas aristas tiene un grafo DIRIGIDO completo con n nodos?", "options": [{"text": "n(n-1)", "c": true}, {"text": "n(n-1)/2", "c": false}, {"text": "n²", "c": false}, {"text": "2n", "c": false}]}, {"text": "¿Cómo se representa un grafo con MATRIZ DE ADYACENCIA?", "options": [{"text": "Matriz M[v,w]=true si existe la arista (v,w); para grafos etiquetados M[v,w]=etiqueta", "c": true}, {"text": "Array de listas donde cada posición i almacena los vecinos del nodo i", "c": false}, {"text": "Árbol binario de búsqueda indexado por número de nodo", "c": false}, {"text": "Tabla hash donde la clave es la arista y el valor es su peso", "c": false}]}, {"text": "¿Cuál es la ventaja de la matriz de adyacencia?", "options": [{"text": "Representación sencilla y acceso en O(1) a una arista concreta", "c": true}, {"text": "Uso eficiente de memoria cuando hay pocas aristas (grafo disperso)", "c": false}, {"text": "El número de nodos puede cambiar dinámicamente", "c": false}, {"text": "Es más rápida para calcular el número total de aristas", "c": false}]}, {"text": "¿Cuál es el inconveniente de la matriz de adyacencia?", "options": [{"text": "Para grafos dispersos (pocas aristas) se desperdicia mucha memoria: O(n²)", "c": true}, {"text": "El acceso a una arista concreta es O(n) en lugar de O(1)", "c": false}, {"text": "No puede representar grafos etiquetados con pesos", "c": false}, {"text": "Solo funciona para grafos no dirigidos", "c": false}]}, {"text": "¿Cómo se representan los grafos con LISTAS DE ADYACENCIA?", "options": [{"text": "Array de n listas donde R[v] contiene los w tales que (v,w) pertenece a A", "c": true}, {"text": "Matriz cuadrada de booleanos de n×n", "c": false}, {"text": "Lista de todas las aristas del grafo ordenadas por peso", "c": false}, {"text": "Árbol donde los nodos representan aristas del grafo", "c": false}]}, {"text": "¿Cuánta memoria usa la representación con listas de adyacencia?", "options": [{"text": "O(n + a) donde n es el número de nodos y a el número de aristas", "c": true}, {"text": "O(n²) siempre", "c": false}, {"text": "O(a²) proporcional al cuadrado de las aristas", "c": false}, {"text": "O(n·a) producto del número de nodos y aristas", "c": false}]}, {"text": "¿Cuándo conviene usar listas de adyacencia frente a matrices?", "options": [{"text": "Cuando a << n² (grafo disperso con pocas aristas)", "c": true}, {"text": "Cuando a ≈ n² (grafo denso con muchas aristas)", "c": false}, {"text": "Siempre, porque las listas siempre son más eficientes", "c": false}, {"text": "Solo para grafos no dirigidos sin pesos", "c": false}]}, {"text": "¿Cuál es el inconveniente de las listas de adyacencia?", "options": [{"text": "Es ineficiente para encontrar las aristas que LLEGAN a un nodo (grado de entrada)", "c": true}, {"text": "El acceso a un vecino concreto es O(n²)", "c": false}, {"text": "No puede representar grafos dirigidos", "c": false}, {"text": "Requiere que los vértices estén numerados consecutivamente", "c": false}]}, {"text": "¿Qué estructura usa la búsqueda primero en PROFUNDIDAD (BPP)?", "options": [{"text": "Una pila (explícita o mediante recursividad)", "c": true}, {"text": "Una cola", "c": false}, {"text": "Un montículo (heap)", "c": false}, {"text": "Un árbol de expansión explícito", "c": false}]}, {"text": "¿Cuál es la idea de la búsqueda primero en PROFUNDIDAD?", "options": [{"text": "Explorar hasta llegar a una hoja antes de retroceder; equivalente al preorden en árboles", "c": true}, {"text": "Visitar todos los vértices nivel por nivel", "c": false}, {"text": "Seleccionar siempre el vértice más cercano no visitado", "c": false}, {"text": "Visitar los vértices por orden de grado decreciente", "c": false}]}, {"text": "¿Qué estructura usa la búsqueda primero en ANCHURA (BPA)?", "options": [{"text": "Una cola para visitar los vértices nivel por nivel", "c": true}, {"text": "Una pila para explorar en profundidad", "c": false}, {"text": "Un montículo para seleccionar el vértice de menor peso", "c": false}, {"text": "Una tabla de marcas booleanas sin estructura auxiliar", "c": false}]}, {"text": "¿Cuál es la complejidad de BPP y BPA con MATRICES de adyacencia?", "options": [{"text": "O(n²) — por cada nodo hay que recorrer toda la fila de la matriz", "c": true}, {"text": "O(n + a)", "c": false}, {"text": "O(a log n)", "c": false}, {"text": "O(n log n)", "c": false}]}, {"text": "¿Cuál es la complejidad de BPP y BPA con LISTAS de adyacencia?", "options": [{"text": "O(n + a) — proporcional al número de nodos y aristas", "c": true}, {"text": "O(n²)", "c": false}, {"text": "O(a log a)", "c": false}, {"text": "O(n·a)", "c": false}]}, {"text": "¿Cómo se detectan los componentes conexos de un grafo no dirigido?", "options": [{"text": "Con BPP o BPA: cada llamada inicial a bpp(v) visita un componente conexo distinto", "c": true}, {"text": "Calculando los ciclos del grafo y contando los nodos en cada ciclo", "c": false}, {"text": "Con el algoritmo de Dijkstra desde todos los nodos", "c": false}, {"text": "Comprobando si la matriz de adyacencia es simétrica", "c": false}]}, {"text": "¿Cómo se detecta si un grafo NO DIRIGIDO tiene algún ciclo?", "options": [{"text": "Con BPP: existe ciclo si y solo si aparece algún arco que no es del árbol de expansión", "c": true}, {"text": "Con BPP: existe ciclo si y solo si aparece algún arco de retroceso", "c": false}, {"text": "Con BPA: existe ciclo si un nodo es visitado más de una vez", "c": false}, {"text": "Comprobando si el número de aristas es mayor que n-1", "c": false}]}, {"text": "¿Cómo se detecta si un grafo DIRIGIDO tiene algún ciclo?", "options": [{"text": "Con BPP: existe ciclo si y solo si aparece algún arco de RETROCESO", "c": true}, {"text": "Con BPP: existe ciclo si aparece cualquier arco que no sea del árbol", "c": false}, {"text": "Con BPA: contando los arcos de avance en el bosque de expansión", "c": false}, {"text": "Comprobando si la matriz de adyacencia no es triangular", "c": false}]}, {"text": "¿Qué es un árbol de expansión de un grafo G?", "options": [{"text": "Subgrafo conexo sin ciclos que incluye todos los vértices de G", "c": true}, {"text": "Subgrafo con el mayor número de aristas posible sin ciclos", "c": false}, {"text": "Árbol binario de búsqueda construido a partir de los vértices de G", "c": false}, {"text": "Camino de mínimo coste que visita todos los vértices de G", "c": false}]}, {"text": "¿Cuál es el objetivo del algoritmo de árbol de expansión de COSTE MÍNIMO?", "options": [{"text": "Encontrar el subgrafo conexo y sin ciclos con menor suma total de pesos de aristas", "c": true}, {"text": "Encontrar el camino más corto entre todos los pares de vértices", "c": false}, {"text": "Encontrar el árbol binario de búsqueda óptimo para el grafo", "c": false}, {"text": "Encontrar el recorrido hamiltoniano de menor coste", "c": false}]}, {"text": "¿Cuál es la idea del algoritmo de PRIM?", "options": [{"text": "Empezar en un vértice y añadir en cada paso el vértice más próximo al conjunto ya construido", "c": true}, {"text": "Ordenar todas las aristas y añadir las de menor coste si no forman ciclo", "c": false}, {"text": "Explorar el grafo en profundidad seleccionando siempre la arista de menor peso", "c": false}, {"text": "Partir todos los vértices en dos conjuntos y añadir la arista de corte más barata", "c": false}]}, {"text": "¿Cuál es la idea del algoritmo de KRUSKAL?", "options": [{"text": "Ordenar todas las aristas de menor a mayor y añadir cada arista si no forma ciclo", "c": true}, {"text": "Empezar en un vértice y añadir el más cercano en cada paso", "c": false}, {"text": "Explorar en anchura eligiendo siempre la arista de menor coste", "c": false}, {"text": "Dividir el grafo en componentes y conectarlos con la arista mínima", "c": false}]}, {"text": "¿Qué estructura de datos se usa en Kruskal para comprobar si una arista forma ciclo?", "options": [{"text": "Estructura de relaciones de equivalencia (Union-Find): si Encuentra(v)=Encuentra(w) hay ciclo", "c": true}, {"text": "Pila para el recorrido en profundidad del grafo", "c": false}, {"text": "Matriz de adyacencia para comprobar si v y w ya están conectados", "c": false}, {"text": "Cola de prioridad con todos los caminos posibles", "c": false}]}, {"text": "¿Cuándo es más eficiente Kruskal frente a Prim?", "options": [{"text": "Cuando el grafo es disperso (a ≈ n): Kruskal es O(n log n); Prim puede ser peor", "c": true}, {"text": "Cuando el grafo es denso (a ≈ n²): Kruskal supera siempre a Prim", "c": false}, {"text": "Kruskal es siempre más eficiente que Prim para cualquier grafo", "c": false}, {"text": "Cuando el grafo no es conexo: Kruskal puede manejarlo directamente", "c": false}]}, {"text": "¿Cuándo es más eficiente Prim frente a Kruskal?", "options": [{"text": "Cuando el grafo es denso (a ≈ n²): Prim es O(n²); Kruskal sería O(n² log n)", "c": true}, {"text": "Cuando el grafo es disperso (a ≈ n): Prim usa menos memoria", "c": false}, {"text": "Prim es siempre más rápido que Kruskal para grafos no dirigidos", "c": false}, {"text": "Cuando el grafo tiene pesos negativos en las aristas", "c": false}]}, {"text": "¿Qué son los 'métodos voraces' mencionados en los algoritmos de árbol de expansión?", "options": [{"text": "Algoritmos que en cada paso añaden el elemento óptimo localmente y nunca deshacen decisiones", "c": true}, {"text": "Algoritmos que prueban todas las combinaciones posibles y eligen la mejor", "c": false}, {"text": "Algoritmos que dividen el problema en subproblemas y los resuelven recursivamente", "c": false}, {"text": "Algoritmos que usan programación dinámica para acumular la solución óptima", "c": false}]}, {"text": "¿Cuál es el objetivo del algoritmo de DIJKSTRA?", "options": [{"text": "Encontrar los caminos mínimos desde un vértice origen a TODOS los demás vértices", "c": true}, {"text": "Encontrar el árbol de expansión de coste mínimo", "c": false}, {"text": "Encontrar el camino mínimo entre TODOS los pares de vértices", "c": false}, {"text": "Encontrar el ciclo de menor coste en el grafo", "c": false}]}, {"text": "¿Cuál es el objetivo del algoritmo de FLOYD?", "options": [{"text": "Encontrar los caminos mínimos entre TODOS los pares de vértices", "c": true}, {"text": "Encontrar el camino mínimo desde un origen a todos los demás", "c": false}, {"text": "Encontrar el árbol de expansión de coste mínimo", "c": false}, {"text": "Detectar ciclos negativos en el grafo", "c": false}]}, {"text": "¿Cuál es el tipo de arco que va de un nodo a uno de sus descendientes NO directos en la BPP de un grafo dirigido?", "options": [{"text": "Arco de avance", "c": true}, {"text": "Arco de retroceso", "c": false}, {"text": "Arco de cruce", "c": false}, {"text": "Arco del árbol de expansión", "c": false}]}, {"text": "¿Qué es un 'arco de cruce' en la BPP de un grafo dirigido?", "options": [{"text": "Arco entre vértices que no son ni ancestros ni descendientes entre sí en el árbol de expansión", "c": true}, {"text": "Arco que apunta de un nodo a un ancestro suyo", "c": false}, {"text": "Arco que conecta dos nodos del mismo nivel del bosque de expansión", "c": false}, {"text": "Arco que va de un nodo a su hijo directo en el árbol", "c": false}]}, {"text": "¿Qué propiedad es FALSA sobre los algoritmos Prim y Kruskal?", "options": [{"text": "Prim siempre es más rápido que Kruskal independientemente del grafo", "c": true}, {"text": "Ambos encuentran siempre la solución óptima (árbol de expansión mínimo)", "c": false}, {"text": "Ambos son algoritmos voraces que no deshacen las decisiones tomadas", "c": false}, {"text": "Ambos requieren un grafo no dirigido y conexo como entrada", "c": false}]}, {"text": "¿Cuál es la complejidad del algoritmo de Kruskal?", "options": [{"text": "O(a log n) donde a es el número de aristas y n el de nodos", "c": true}, {"text": "O(n²) para grafos densos siempre", "c": false}, {"text": "O(n log n) independientemente del número de aristas", "c": false}, {"text": "O(a + n) con listas de adyacencia", "c": false}]}, {"text": "En la representación con listas múltiples de adyacencia, ¿qué ventaja ofrecen frente a las listas simples?", "options": [{"text": "Permiten encontrar eficientemente tanto los nodos adyacentes A v como los que tienen arco hacia v", "c": true}, {"text": "Reducen el uso de memoria a O(n) independientemente de las aristas", "c": false}, {"text": "Permiten grafos con aristas de peso negativo sin modificaciones", "c": false}, {"text": "Hacen que todas las operaciones sean O(1)", "c": false}]}];
-let qs=[],cur=0,ans=[];
+const ALL=[{"text": "¿Cómo se define formalmente un grafo G?", "options": [{"text": "G = (V, A), donde V es un conjunto no vacío de vértices y A es un conjunto de aristas (pares de vértices)", "c": true}, {"text": "G = (N, E), donde N son los nodos con pesos y E son las etiquetas de las aristas", "c": false}, {"text": "G = (V, A, P), donde V son vértices, A aristas y P pesos obligatorios", "c": false}, {"text": "G = (R, S), donde R es la raíz y S son los subgrafos", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuál es la diferencia entre grafo dirigido y no dirigido?", "options": [{"text": "En el no dirigido (v,w)=(w,v); en el dirigido ⟨v,w⟩≠⟨w,v⟩ (las aristas tienen sentido)", "c": true}, {"text": "En el dirigido los nodos tienen pesos; en el no dirigido las aristas los tienen", "c": false}, {"text": "En el no dirigido puede haber ciclos; en el dirigido no", "c": false}, {"text": "En el dirigido todos los nodos tienen el mismo grado de salida", "c": false}], "d": 1, "t": 6}, {"text": "¿Qué es un grafo etiquetado o con pesos?", "options": [{"text": "Un grafo G=(V,A,W) donde W:A→TipoEtiqueta asigna un valor a cada arista", "c": true}, {"text": "Un grafo donde cada vértice tiene un nombre único", "c": false}, {"text": "Un grafo donde las aristas están ordenadas por peso ascendente", "c": false}, {"text": "Un grafo donde los pesos representan el número de vértices adyacentes", "c": false}], "d": 1, "t": 6}, {"text": "¿Qué es un camino en un grafo?", "options": [{"text": "Secuencia de vértices w₁,w₂,...,wₙ tal que todas las aristas (wᵢ,wᵢ₊₁) pertenecen a A", "c": true}, {"text": "Cualquier subconjunto de aristas del grafo", "c": false}, {"text": "La arista de menor coste entre dos vértices", "c": false}, {"text": "Un recorrido que visita todos los vértices exactamente una vez", "c": false}], "d": 1, "t": 6}, {"text": "¿Qué es la longitud de un camino?", "options": [{"text": "El número de aristas del camino (número de nodos menos 1)", "c": true}, {"text": "La suma de los pesos de las aristas del camino", "c": false}, {"text": "El número de nodos distintos del camino", "c": false}, {"text": "La distancia euclidiana entre el origen y el destino", "c": false}], "d": 1, "t": 6}, {"text": "¿Qué es un ciclo en un grafo?", "options": [{"text": "Camino en el que el primer y el último vértice son iguales", "c": true}, {"text": "Camino que pasa por todos los vértices del grafo", "c": false}, {"text": "Arista que conecta un nodo consigo mismo (bucle)", "c": false}, {"text": "Camino de longitud máxima entre dos vértices", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuándo se dice que un grafo es CONEXO?", "options": [{"text": "Cuando existe un camino entre cualquier par de vértices", "c": true}, {"text": "Cuando tiene exactamente un ciclo simple", "c": false}, {"text": "Cuando todos los vértices tienen el mismo grado", "c": false}, {"text": "Cuando es un árbol de expansión de otro grafo mayor", "c": false}], "d": 1, "t": 6}, {"text": "¿Qué es el GRADO de un vértice v en un grafo no dirigido?", "options": [{"text": "El número de aristas que inciden en v", "c": true}, {"text": "El número de vértices adyacentes a los que v apunta", "c": false}, {"text": "La longitud del camino más corto desde v a cualquier otro vértice", "c": false}, {"text": "El número de ciclos que pasan por v", "c": false}], "d": 1, "t": 6}, {"text": "En un grafo DIRIGIDO, ¿qué es el grado de ENTRADA de v?", "options": [{"text": "El número de aristas ⟨x,v⟩ (aristas que llegan a v)", "c": true}, {"text": "El número de aristas ⟨v,x⟩ (aristas que salen de v)", "c": false}, {"text": "El número total de aristas que inciden en v", "c": false}, {"text": "La suma del grado de entrada y de salida de v", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuántas aristas tiene un grafo NO DIRIGIDO completo con n nodos?", "options": [{"text": "n(n-1)/2", "c": true}, {"text": "n(n-1)", "c": false}, {"text": "n²", "c": false}, {"text": "2n-1", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuántas aristas tiene un grafo DIRIGIDO completo con n nodos?", "options": [{"text": "n(n-1)", "c": true}, {"text": "n(n-1)/2", "c": false}, {"text": "n²", "c": false}, {"text": "2n", "c": false}], "d": 1, "t": 6}, {"text": "¿Cómo se representa un grafo con MATRIZ DE ADYACENCIA?", "options": [{"text": "Matriz M[v,w]=true si existe la arista (v,w); para grafos etiquetados M[v,w]=etiqueta", "c": true}, {"text": "Array de listas donde cada posición i almacena los vecinos del nodo i", "c": false}, {"text": "Árbol binario de búsqueda indexado por número de nodo", "c": false}, {"text": "Tabla hash donde la clave es la arista y el valor es su peso", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuál es la ventaja de la matriz de adyacencia?", "options": [{"text": "Representación sencilla y acceso en O(1) a una arista concreta", "c": true}, {"text": "Uso eficiente de memoria cuando hay pocas aristas (grafo disperso)", "c": false}, {"text": "El número de nodos puede cambiar dinámicamente", "c": false}, {"text": "Es más rápida para calcular el número total de aristas", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuál es el inconveniente de la matriz de adyacencia?", "options": [{"text": "Para grafos dispersos (pocas aristas) se desperdicia mucha memoria: O(n²)", "c": true}, {"text": "El acceso a una arista concreta es O(n) en lugar de O(1)", "c": false}, {"text": "No puede representar grafos etiquetados con pesos", "c": false}, {"text": "Solo funciona para grafos no dirigidos", "c": false}], "d": 1, "t": 6}, {"text": "¿Cómo se representan los grafos con LISTAS DE ADYACENCIA?", "options": [{"text": "Array de n listas donde R[v] contiene los w tales que (v,w) pertenece a A", "c": true}, {"text": "Matriz cuadrada de booleanos de n×n", "c": false}, {"text": "Lista de todas las aristas del grafo ordenadas por peso", "c": false}, {"text": "Árbol donde los nodos representan aristas del grafo", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuánta memoria usa la representación con listas de adyacencia?", "options": [{"text": "O(n + a) donde n es el número de nodos y a el número de aristas", "c": true}, {"text": "O(n²) siempre", "c": false}, {"text": "O(a²) proporcional al cuadrado de las aristas", "c": false}, {"text": "O(n·a) producto del número de nodos y aristas", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuándo conviene usar listas de adyacencia frente a matrices?", "options": [{"text": "Cuando a << n² (grafo disperso con pocas aristas)", "c": true}, {"text": "Cuando a ≈ n² (grafo denso con muchas aristas)", "c": false}, {"text": "Siempre, porque las listas siempre son más eficientes", "c": false}, {"text": "Solo para grafos no dirigidos sin pesos", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuál es el inconveniente de las listas de adyacencia?", "options": [{"text": "Es ineficiente para encontrar las aristas que LLEGAN a un nodo (grado de entrada)", "c": true}, {"text": "El acceso a un vecino concreto es O(n²)", "c": false}, {"text": "No puede representar grafos dirigidos", "c": false}, {"text": "Requiere que los vértices estén numerados consecutivamente", "c": false}], "d": 1, "t": 6}, {"text": "¿Qué estructura usa la búsqueda primero en PROFUNDIDAD (BPP)?", "options": [{"text": "Una pila (explícita o mediante recursividad)", "c": true}, {"text": "Una cola", "c": false}, {"text": "Un montículo (heap)", "c": false}, {"text": "Un árbol de expansión explícito", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuál es la idea de la búsqueda primero en PROFUNDIDAD?", "options": [{"text": "Explorar hasta llegar a una hoja antes de retroceder; equivalente al preorden en árboles", "c": true}, {"text": "Visitar todos los vértices nivel por nivel", "c": false}, {"text": "Seleccionar siempre el vértice más cercano no visitado", "c": false}, {"text": "Visitar los vértices por orden de grado decreciente", "c": false}], "d": 1, "t": 6}, {"text": "¿Qué estructura usa la búsqueda primero en ANCHURA (BPA)?", "options": [{"text": "Una cola para visitar los vértices nivel por nivel", "c": true}, {"text": "Una pila para explorar en profundidad", "c": false}, {"text": "Un montículo para seleccionar el vértice de menor peso", "c": false}, {"text": "Una tabla de marcas booleanas sin estructura auxiliar", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuál es la complejidad de BPP y BPA con MATRICES de adyacencia?", "options": [{"text": "O(n²) — por cada nodo hay que recorrer toda la fila de la matriz", "c": true}, {"text": "O(n + a)", "c": false}, {"text": "O(a log n)", "c": false}, {"text": "O(n log n)", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuál es la complejidad de BPP y BPA con LISTAS de adyacencia?", "options": [{"text": "O(n + a) — proporcional al número de nodos y aristas", "c": true}, {"text": "O(n²)", "c": false}, {"text": "O(a log a)", "c": false}, {"text": "O(n·a)", "c": false}], "d": 1, "t": 6}, {"text": "¿Cómo se detectan los componentes conexos de un grafo no dirigido?", "options": [{"text": "Con BPP o BPA: cada llamada inicial a bpp(v) visita un componente conexo distinto", "c": true}, {"text": "Calculando los ciclos del grafo y contando los nodos en cada ciclo", "c": false}, {"text": "Con el algoritmo de Dijkstra desde todos los nodos", "c": false}, {"text": "Comprobando si la matriz de adyacencia es simétrica", "c": false}], "d": 1, "t": 6}, {"text": "¿Cómo se detecta si un grafo NO DIRIGIDO tiene algún ciclo?", "options": [{"text": "Con BPP: existe ciclo si y solo si aparece algún arco que no es del árbol de expansión", "c": true}, {"text": "Con BPP: existe ciclo si y solo si aparece algún arco de retroceso", "c": false}, {"text": "Con BPA: existe ciclo si un nodo es visitado más de una vez", "c": false}, {"text": "Comprobando si el número de aristas es mayor que n-1", "c": false}], "d": 1, "t": 6}, {"text": "¿Cómo se detecta si un grafo DIRIGIDO tiene algún ciclo?", "options": [{"text": "Con BPP: existe ciclo si y solo si aparece algún arco de RETROCESO", "c": true}, {"text": "Con BPP: existe ciclo si aparece cualquier arco que no sea del árbol", "c": false}, {"text": "Con BPA: contando los arcos de avance en el bosque de expansión", "c": false}, {"text": "Comprobando si la matriz de adyacencia no es triangular", "c": false}], "d": 1, "t": 6}, {"text": "¿Qué es un árbol de expansión de un grafo G?", "options": [{"text": "Subgrafo conexo sin ciclos que incluye todos los vértices de G", "c": true}, {"text": "Subgrafo con el mayor número de aristas posible sin ciclos", "c": false}, {"text": "Árbol binario de búsqueda construido a partir de los vértices de G", "c": false}, {"text": "Camino de mínimo coste que visita todos los vértices de G", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuál es el objetivo del algoritmo de árbol de expansión de COSTE MÍNIMO?", "options": [{"text": "Encontrar el subgrafo conexo y sin ciclos con menor suma total de pesos de aristas", "c": true}, {"text": "Encontrar el camino más corto entre todos los pares de vértices", "c": false}, {"text": "Encontrar el árbol binario de búsqueda óptimo para el grafo", "c": false}, {"text": "Encontrar el recorrido hamiltoniano de menor coste", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuál es la idea del algoritmo de PRIM?", "options": [{"text": "Empezar en un vértice y añadir en cada paso el vértice más próximo al conjunto ya construido", "c": true}, {"text": "Ordenar todas las aristas y añadir las de menor coste si no forman ciclo", "c": false}, {"text": "Explorar el grafo en profundidad seleccionando siempre la arista de menor peso", "c": false}, {"text": "Partir todos los vértices en dos conjuntos y añadir la arista de corte más barata", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuál es la idea del algoritmo de KRUSKAL?", "options": [{"text": "Ordenar todas las aristas de menor a mayor y añadir cada arista si no forma ciclo", "c": true}, {"text": "Empezar en un vértice y añadir el más cercano en cada paso", "c": false}, {"text": "Explorar en anchura eligiendo siempre la arista de menor coste", "c": false}, {"text": "Dividir el grafo en componentes y conectarlos con la arista mínima", "c": false}], "d": 1, "t": 6}, {"text": "¿Qué estructura de datos se usa en Kruskal para comprobar si una arista forma ciclo?", "options": [{"text": "Estructura de relaciones de equivalencia (Union-Find): si Encuentra(v)=Encuentra(w) hay ciclo", "c": true}, {"text": "Pila para el recorrido en profundidad del grafo", "c": false}, {"text": "Matriz de adyacencia para comprobar si v y w ya están conectados", "c": false}, {"text": "Cola de prioridad con todos los caminos posibles", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuándo es más eficiente Kruskal frente a Prim?", "options": [{"text": "Cuando el grafo es disperso (a ≈ n): Kruskal es O(n log n); Prim puede ser peor", "c": true}, {"text": "Cuando el grafo es denso (a ≈ n²): Kruskal supera siempre a Prim", "c": false}, {"text": "Kruskal es siempre más eficiente que Prim para cualquier grafo", "c": false}, {"text": "Cuando el grafo no es conexo: Kruskal puede manejarlo directamente", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuándo es más eficiente Prim frente a Kruskal?", "options": [{"text": "Cuando el grafo es denso (a ≈ n²): Prim es O(n²); Kruskal sería O(n² log n)", "c": true}, {"text": "Cuando el grafo es disperso (a ≈ n): Prim usa menos memoria", "c": false}, {"text": "Prim es siempre más rápido que Kruskal para grafos no dirigidos", "c": false}, {"text": "Cuando el grafo tiene pesos negativos en las aristas", "c": false}], "d": 1, "t": 6}, {"text": "¿Qué son los 'métodos voraces' mencionados en los algoritmos de árbol de expansión?", "options": [{"text": "Algoritmos que en cada paso añaden el elemento óptimo localmente y nunca deshacen decisiones", "c": true}, {"text": "Algoritmos que prueban todas las combinaciones posibles y eligen la mejor", "c": false}, {"text": "Algoritmos que dividen el problema en subproblemas y los resuelven recursivamente", "c": false}, {"text": "Algoritmos que usan programación dinámica para acumular la solución óptima", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuál es el objetivo del algoritmo de DIJKSTRA?", "options": [{"text": "Encontrar los caminos mínimos desde un vértice origen a TODOS los demás vértices", "c": true}, {"text": "Encontrar el árbol de expansión de coste mínimo", "c": false}, {"text": "Encontrar el camino mínimo entre TODOS los pares de vértices", "c": false}, {"text": "Encontrar el ciclo de menor coste en el grafo", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuál es el objetivo del algoritmo de FLOYD?", "options": [{"text": "Encontrar los caminos mínimos entre TODOS los pares de vértices", "c": true}, {"text": "Encontrar el camino mínimo desde un origen a todos los demás", "c": false}, {"text": "Encontrar el árbol de expansión de coste mínimo", "c": false}, {"text": "Detectar ciclos negativos en el grafo", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuál es el tipo de arco que va de un nodo a uno de sus descendientes NO directos en la BPP de un grafo dirigido?", "options": [{"text": "Arco de avance", "c": true}, {"text": "Arco de retroceso", "c": false}, {"text": "Arco de cruce", "c": false}, {"text": "Arco del árbol de expansión", "c": false}], "d": 1, "t": 6}, {"text": "¿Qué es un 'arco de cruce' en la BPP de un grafo dirigido?", "options": [{"text": "Arco entre vértices que no son ni ancestros ni descendientes entre sí en el árbol de expansión", "c": true}, {"text": "Arco que apunta de un nodo a un ancestro suyo", "c": false}, {"text": "Arco que conecta dos nodos del mismo nivel del bosque de expansión", "c": false}, {"text": "Arco que va de un nodo a su hijo directo en el árbol", "c": false}], "d": 1, "t": 6}, {"text": "¿Qué propiedad es FALSA sobre los algoritmos Prim y Kruskal?", "options": [{"text": "Prim siempre es más rápido que Kruskal independientemente del grafo", "c": true}, {"text": "Ambos encuentran siempre la solución óptima (árbol de expansión mínimo)", "c": false}, {"text": "Ambos son algoritmos voraces que no deshacen las decisiones tomadas", "c": false}, {"text": "Ambos requieren un grafo no dirigido y conexo como entrada", "c": false}], "d": 1, "t": 6}, {"text": "¿Cuál es la complejidad del algoritmo de Kruskal?", "options": [{"text": "O(a log n) donde a es el número de aristas y n el de nodos", "c": true}, {"text": "O(n²) para grafos densos siempre", "c": false}, {"text": "O(n log n) independientemente del número de aristas", "c": false}, {"text": "O(a + n) con listas de adyacencia", "c": false}], "d": 1, "t": 6}, {"text": "En la representación con listas múltiples de adyacencia, ¿qué ventaja ofrecen frente a las listas simples?", "options": [{"text": "Permiten encontrar eficientemente tanto los nodos adyacentes A v como los que tienen arco hacia v", "c": true}, {"text": "Reducen el uso de memoria a O(n) independientemente de las aristas", "c": false}, {"text": "Permiten grafos con aristas de peso negativo sin modificaciones", "c": false}, {"text": "Hacen que todas las operaciones sean O(1)", "c": false}], "d": 1, "t": 6}];
+const QUIZ_TITLE="Grafos: Conceptos y Algoritmos";
+
+const AC=window.AudioContext||window.webkitAudioContext;let _ax=null;
+function ga(){if(!_ax)_ax=new AC();return _ax;}
+function beep(f,d){try{const c=ga(),o=c.createOscillator(),g=c.createGain();o.connect(g);g.connect(c.destination);o.type='sine';o.frequency.value=f;g.gain.setValueAtTime(.14,c.currentTime);g.gain.exponentialRampToValueAtTime(.001,c.currentTime+d);o.start();o.stop(c.currentTime+d);}catch(e){}}
 const LB=['A','B','C','D'];
+let qs=[],cur=0,ans=[];
+
 function sh(a){const b=[...a];for(let i=b.length-1;i>0;i--){const j=0|Math.random()*(i+1);[b[i],b[j]]=[b[j],b[i]];}return b;}
-function start(){
-  qs=sh(ALL).map(q=>{
-    const so=sh(q.options);
-    return{...q,options:so};
-  });
+
+function start(pool){
+  pool=pool||ALL;
+  qs=sh(pool).map(q=>({...q,options:sh(q.options)}));
   ans=new Array(qs.length).fill(null);
   cur=0;
   document.getElementById('res').style.display='none';
+  document.getElementById('review').style.display='none';
   const qd=document.getElementById('quiz');
   qd.querySelectorAll('.card').forEach(c=>c.remove());
   qd.style.display='block';
@@ -107,56 +128,132 @@ function start(){
     card.className='card'+(qi===0?' on':'');
     card.id='c'+qi;
     let extra='';
-    if(q.code)extra+=`<div class="code">${q.code}</div>`;
-    card.innerHTML=`<div class="qt">${q.text}</div>${extra}<div class="opts" id="o${qi}">${
-      q.options.map((op,oi)=>`<div class="opt" onclick="pick(${qi},${oi})" id="op${qi}_${oi}">
-        <span class="ol">${LB[oi]}</span><span class="ot">${op.text}</span></div>`).join('')
-    }</div><div class="fb" id="fb${qi}"></div>
-    <div class="nav">
-      <button class="btn" onclick="go(-1)" ${qi===0?'disabled':''}>Anterior</button>
-      <span class="pg">${qi+1} / ${qs.length}</span>
-      <button class="btn pr" onclick="go(1)">${qi===qs.length-1?'Ver resultado':'Siguiente'}</button>
-    </div>`;
+    if(q.code)extra=`<div class="code">${q.code}</div>`;
+    card.innerHTML=`<div class="qt">${q.text}</div>${extra}
+<div class="opts" id="o${qi}">${q.options.map((op,oi)=>
+  `<div class="opt" onclick="pick(${qi},${oi})" id="op${qi}_${oi}">
+   <span class="ol">${LB[oi]}</span><span class="ot">${op.text}</span></div>`).join('')}
+</div><div class="fb" id="fb${qi}"></div>
+<div class="nav">
+  <button class="btn" onclick="go(-1)"${qi===0?' disabled':''}>Anterior</button>
+  <span class="pg">${qi+1} / ${qs.length}</span>
+  <button class="btn pr" onclick="go(1)">${qi===qs.length-1?'Ver resultado':'Siguiente'}</button>
+</div>`;
     qd.appendChild(card);
   });
   show(0);
 }
+
 function show(i){
   document.querySelectorAll('.card').forEach(c=>c.classList.remove('on'));
   const c=document.getElementById('c'+i);if(c){c.classList.add('on');cur=i;}
   document.getElementById('qc').textContent=`Pregunta ${i+1} de ${qs.length}`;
   document.getElementById('pb').style.width=((i+1)/qs.length*100)+'%';
 }
+
 function go(d){const n=cur+d;if(n<0)return;if(n>=qs.length){showRes();return;}show(n);}
+
 function pick(qi,oi){
   if(ans[qi]!==null)return;
   ans[qi]=oi;
   const ci=qs[qi].options.findIndex(o=>o.c);
-  if(oi===ci)beep(880,.32);else beep(240,.38);
+  if(oi===ci)beep(880,.3);else beep(240,.38);
   qs[qi].options.forEach((_,i)=>{
     const el=document.getElementById(`op${qi}_${i}`);
     el.classList.add('done');
     if(i===ci)el.classList.add('ok');
-    else if(i===oi)el.classList.add('bad');
+    else if(i===oi)el.classList.add('ng');
     else el.classList.add('dim');
   });
   if(qs[qi].exp){const fb=document.getElementById('fb'+qi);fb.textContent=qs[qi].exp;fb.classList.add('on');}
 }
+
+function calcScore(){
+  let ok=0,ng=0,sk=0;
+  ans.forEach((a,i)=>{if(a===null){sk++;return;}const ci=qs[i].options.findIndex(o=>o.c);if(a===ci)ok++;else ng++;});
+  return{ok,ng,sk,tot:qs.length,pct:Math.round(ok/qs.length*100)};
+}
+
 function showRes(){
   document.getElementById('quiz').style.display='none';
+  document.getElementById('review').style.display='none';
   document.getElementById('res').style.display='block';
-  let ok=0,ng=0;
-  ans.forEach((a,i)=>{if(a===null)return;const ci=qs[i].options.findIndex(o=>o.c);if(a===ci)ok++;else ng++;});
-  const tot=qs.length,pct=Math.round(ok/tot*100);
+  const{ok,ng,sk,tot,pct}=calcScore();
   document.getElementById('pct').textContent=pct+'%';
   document.getElementById('sok').textContent=ok;
   document.getElementById('sng').textContent=ng;
-  document.getElementById('stot').textContent=tot;
-  document.getElementById('rdesc').textContent=pct>=90?'¡Excelente! Dominas el tema.':pct>=70?'Buen resultado. Repasa los fallos.':pct>=50?'Aprobado justo. Sigue repasando.':'Hay que estudiar más. ¡Tú puedes!';
+  document.getElementById('sskip').textContent=sk;
+  const desc=pct>=90?'¡Excelente! Dominas el tema.':pct>=70?'Buen resultado. Repasa los fallos.':pct>=50?'Aprobado justo. Sigue repasando.':'Hay que estudiar más. ¡Tú puedes!';
+  document.getElementById('rdesc').textContent=desc;
   setTimeout(()=>{document.getElementById('sc').style.strokeDashoffset=326.7-(pct/100)*326.7;},120);
   document.getElementById('pb').style.width='100%';
 }
+
+function backToResults(){document.getElementById('review').style.display='none';document.getElementById('res').style.display='block';}
+
+function startReview(){
+  document.getElementById('res').style.display='none';
+  document.getElementById('review').style.display='block';
+  const body=document.getElementById('rev-body');
+  body.innerHTML='';
+  qs.forEach((q,qi)=>{
+    const ci=q.options.findIndex(o=>o.c),ua=ans[qi];
+    const st=ua===null?'sk':ua===ci?'ok':'ng';
+    const bl=st==='ok'?'✓ Correcta':st==='ng'?'✗ Incorrecta':'Sin responder';
+    let h=`<div class="rq">
+<div class="rq-num">Pregunta ${qi+1} <span class="badge ${st}">${bl}</span></div>
+<div class="rq-text">${q.text}</div>`;
+    if(q.code)h+=`<div class="code">${q.code}</div>`;
+    q.options.forEach((op,oi)=>{
+      const cls=oi===ci?' ok':oi===ua?' ng':'';
+      const mk=oi===ci?' ✓':oi===ua?' ✗':'';
+      h+=`<div class="rq-opt${cls}"><span style="font-weight:700;min-width:20px">${LB[oi]})</span><span>${op.text}${mk}</span></div>`;
+    });
+    if(q.exp)h+=`<div class="rq-exp">💡 ${q.exp}</div>`;
+    h+='</div>';
+    body.innerHTML+=h;
+  });
+  window.scrollTo(0,0);
+}
+
+function exportPDF(){
+  const{ok,tot,pct}=calcScore();
+  let h=`<!DOCTYPE html><html lang="es"><head><meta charset="UTF-8">
+<title>Revisión</title><style>
+body{font-family:Arial,sans-serif;font-size:11.5pt;color:#111;max-width:680px;margin:36px auto;padding:0 18px}
+h1{font-size:16pt;margin-bottom:3px}
+.meta{color:#555;font-size:10pt;margin-bottom:22px;padding-bottom:10px;border-bottom:1px solid #ddd}
+.q{margin-bottom:18px;padding:10px 12px;border:1px solid #ddd;border-radius:6px;page-break-inside:avoid}
+.qn{font-size:8.5pt;color:#888;text-transform:uppercase;letter-spacing:.04em;margin-bottom:3px}
+.qt{font-weight:600;margin-bottom:7px;line-height:1.5}
+.qcode{background:#f5f5f5;border:1px solid #ddd;padding:7px 9px;font-family:Consolas,monospace;font-size:9.5pt;margin-bottom:7px;white-space:pre-wrap}
+.op{padding:2px 5px;margin-bottom:2px;border-radius:3px;font-size:10.5pt;line-height:1.4}
+.op.ok{background:#f0fdf4;color:#166534;font-weight:600}
+.op.ng{background:#fef2f2;color:#991b1b;font-weight:600}
+.exp{margin-top:5px;font-size:9pt;color:#555;padding:4px 7px;border-left:3px solid #ddd}
+@page{margin:1.5cm}
+</style></head><body>
+<h1>${QUIZ_TITLE}</h1>
+<div class="meta">Resultado: ${ok}/${tot} correctas · ${pct}% · Revisión completa</div>`;
+  qs.forEach((q,qi)=>{
+    const ci=q.options.findIndex(o=>o.c),ua=ans[qi];
+    const st=ua===null?'Sin responder':ua===ci?'✓ Correcta':'✗ Incorrecta';
+    h+=`<div class="q"><div class="qn">Pregunta ${qi+1} — ${st}</div><div class="qt">${q.text}</div>`;
+    if(q.code)h+=`<div class="qcode">${q.code}</div>`;
+    q.options.forEach((op,oi)=>{
+      const cls=oi===ci?' ok':oi===ua?' ng':'';
+      const mk=oi===ci?' ✓':oi===ua?' ✗':'';
+      h+=`<div class="op${cls}">${LB[oi]}) ${op.text}${mk}</div>`;
+    });
+    if(q.exp)h+=`<div class="exp">💡 ${q.exp}</div>`;
+    h+='</div>';
+  });
+  h+='</body></html>';
+  const w=window.open('','_blank');
+  w.document.write(h);w.document.close();
+  setTimeout(()=>w.print(),450);
+}
+
 start();
 </script>
-</body>
-</html>
+</body></html>
